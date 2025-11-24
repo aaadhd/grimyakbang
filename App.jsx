@@ -275,13 +275,9 @@ const WelcomeScreen = ({ onStartToday, onExplore }) => {
 
         {/* Description */}
         <p className="text-2xl font-gowun text-stone-700 mb-12 leading-relaxed">
-          오늘 받으신 교구와 함께
+          어르신들의 기억·감정·작품을 한 곳에서 케어하는
           <br />
-          스마트 콘텐츠로 더 재미있게 그려보세요.
-          <br />
-          <span className="text-[#EB6A29] font-semibold">기억 회상 스케치, 스티커 아트</span> 등
-          <br />
-          다양한 활동을 준비했어요.
+          <span className="text-[#EB6A29] font-jua font-bold text-2xl">디지털 미술 약국, 그림약방</span>입니다.
         </p>
 
         {/* Buttons */}
@@ -2074,6 +2070,7 @@ const HOF_DATA = {
     center: "위례복지관",
     artworkTitle: "오늘의 풍경 스케치",
     reactions: 23,
+    imageUrl: "/weekly_voted.jpg",
   },
   aiPick: {
     type: "ai",
@@ -2083,6 +2080,7 @@ const HOF_DATA = {
     center: "강남복지관",
     artworkTitle: "손녀 생각하며 그린 그림",
     reactions: 17,
+    imageUrl: "/weekly_ai.jpg",
   },
 };
 
@@ -2106,9 +2104,17 @@ const HallOfFameCard = ({ item }) => {
       {/* 썸네일 영역 (수상작 느낌) */}
       <div className="hof-card__thumb">
         <div className="hof-card__thumb-inner">
-          <span className="hof-card__thumb-emoji">
-            {isBest ? "🎨" : "💡"}
-          </span>
+          {item.imageUrl ? (
+            <img 
+              src={item.imageUrl} 
+              alt={item.artworkTitle}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="hof-card__thumb-emoji">
+              {isBest ? "🎨" : "💡"}
+            </span>
+          )}
         </div>
       </div>
 
@@ -2352,7 +2358,20 @@ const Screen5_Community = ({ onNav }) => {
                 {post.image}
               </div>
               {/* 설명 */}
-              <div className="text-base text-gray-600 mb-5 leading-relaxed">{post.description}</div>
+              <div 
+                className="text-base text-gray-600 mb-5 leading-relaxed"
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  minHeight: '3rem',
+                  lineHeight: '1.5rem'
+                }}
+              >
+                {post.description}
+              </div>
               {/* 액션 버튼 */}
               <div className="flex gap-2 pt-3 border-t border-stone-100">
                 <button

@@ -125,18 +125,18 @@
 }
 
 .hof-section__icon {
-  font-size: 26px;
+  font-size: 30px;
 }
 
 .hof-section__title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   color: #2d2a26;
   font-family: 'Jua', sans-serif;
 }
 
 .hof-section__subtitle {
-  font-size: 13px;
+  font-size: 16px;
   color: #7b766f;
   font-family: 'Gowun Dodum', sans-serif;
 }
@@ -173,7 +173,7 @@
   padding: 4px 10px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   color: #3b3127;
   margin-bottom: 8px;
@@ -181,11 +181,11 @@
 }
 
 .hof-card__ribbon-icon {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .hof-card__description {
-  font-size: 13px;
+  font-size: 16px;
   color: #5c5147;
   margin-bottom: 12px;
   font-family: 'Gowun Dodum', sans-serif;
@@ -225,7 +225,7 @@
 }
 
 .hof-card__author {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: #2d2a26;
   margin-bottom: 2px;
@@ -237,10 +237,11 @@
   font-weight: 400;
   color: #5f574f;
   font-family: 'Gowun Dodum', sans-serif;
+  font-size: 16px;
 }
 
 .hof-card__artwork-title {
-  font-size: 13px;
+  font-size: 16px;
   color: #4a4036;
   font-family: 'Jua', sans-serif;
 }
@@ -256,8 +257,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 3px 10px;
-  font-size: 11px;
+  padding: 4px 12px;
+  font-size: 14px;
   white-space: nowrap;
   font-family: 'Jua', sans-serif;
 }
@@ -276,7 +277,7 @@
   display: flex;
   align-items: center;
   margin: 24px 0 12px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: #3b342c;
   font-family: 'Jua', sans-serif;
