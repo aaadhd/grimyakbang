@@ -357,7 +357,7 @@ const CoachMark = ({ onDismiss }) => {
     {
       target: "community",
       title: "마음 나눔",
-      desc: "마음 나눔 화면입니다.\n다른 친구들의 작품을 보고 이야기를 나눌 수 있습니다.",
+      desc: "마음 나눔 화면입니다.\n명예의 전당 작품과 다른 어르신들의 작품을 보고\n댓글로 소통할 수 있습니다.",
       style: { top: "100px", right: "130px" }
     },
     {
@@ -567,7 +567,13 @@ const App = () => {
         );
       case "weekly":
         return (
-          <Screen_Weekly onNav={navigateTo} onStartActivity={startActivity} />
+          <div className="h-full relative">
+            <VoiceGuideButton 
+              position="top-right" 
+              text="금주의 수업 화면입니다. 이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다."
+            />
+            <Screen_Weekly onNav={navigateTo} onStartActivity={startActivity} />
+          </div>
         );
       case "studio_main":
         return (
@@ -581,13 +587,6 @@ const App = () => {
               onCategoryNav={navigateToCategory}
               onStartActivity={startActivity}
             />
-            <button
-              onClick={() => setShowVoiceModal(true)}
-              className="absolute bottom-8 right-8 z-50 flex items-center gap-2 px-6 py-4 bg-[#4C8F7E] text-white rounded-xl font-jua text-xl shadow-lg hover:bg-[#3d7265] transition-all"
-            >
-              <Mic size={24} />
-              <span>음성으로 말하기</span>
-            </button>
           </div>
         );
       case "studio_list":
@@ -656,19 +655,27 @@ const App = () => {
           </div>
         );
       case "community":
-        return <Screen5_Community onNav={navigateTo} />;
-      case "ai":
-        return <Screen6_AI onNav={navigateTo} />;
-      case "admin":
         return (
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="AI 분석 화면입니다. 주간 감정 변화와 활동 분석을 확인할 수 있습니다."
+              text="마음 나눔 화면입니다. 명예의 전당 작품과 다른 어르신들의 작품을 보고 댓글로 소통할 수 있습니다."
             />
-            <Screen_Admin onNav={navigateTo} />
+            <Screen5_Community onNav={navigateTo} />
           </div>
         );
+      case "ai":
+        return (
+          <div className="h-full relative">
+            <VoiceGuideButton 
+              position="top-right" 
+              text="AI 분석 화면입니다. 주간 감정 변화 그래프와 정서 안정 지수, 활동 분석을 확인할 수 있습니다."
+            />
+            <Screen6_AI onNav={navigateTo} />
+          </div>
+        );
+      case "admin":
+        return <Screen_Admin onNav={navigateTo} />;
       default:
         return <Screen1_Home onNav={navigateTo} />;
     }
@@ -1151,15 +1158,16 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
       {/* Class Detail Modal */}
       {selectedClass && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-fadeIn overflow-hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-6 animate-fadeIn"
           onClick={() => setSelectedClass(null)}
         >
           <div
-            className="bg-white rounded-3xl p-8 w-[85%] max-w-[1000px] h-[95vh] shadow-2xl border-2 border-stone-200 relative flex flex-row gap-8"
+            className="bg-white rounded-3xl p-8 w-[90%] max-w-[1000px] shadow-2xl border-2 border-stone-200 relative flex flex-row gap-8"
+            style={{ maxHeight: '85%', minHeight: '620px' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* 좌측: 정보 영역 */}
-            <div className="flex-1 pr-4 flex flex-col">
+            <div className="flex-1 pr-4 flex flex-col min-h-0">
             <button
               onClick={() => setSelectedClass(null)}
               className="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 text-stone-400 transition z-10"
@@ -1167,7 +1175,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
               <X size={28} />
             </button>
 
-            <div className="mb-6">
+            <div className="mb-6 shrink-0">
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <span className={`px-4 py-2 rounded-full text-lg font-jua font-bold ${
                   selectedClass.isToday
@@ -1208,12 +1216,12 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
             </div>
 
             {/* Video Section */}
-            <div>
-              <h3 className="text-xl font-jua text-stone-800 mb-3 flex items-center gap-2">
+            <div className="flex-1 flex flex-col min-h-0">
+              <h3 className="text-xl font-jua text-stone-800 mb-3 flex items-center gap-2 shrink-0">
                 <Play size={24} className="text-[#EB6A29]" />
                 안내 영상
               </h3>
-              <div className="bg-stone-100 rounded-2xl p-4 flex items-center justify-center relative overflow-hidden" style={{ height: '280px' }}>
+              <div className="bg-stone-100 rounded-2xl p-4 flex items-center justify-center relative overflow-hidden flex-1">
                 {/* 전체 화면 버튼 - 우상단 */}
                 <button className="absolute top-4 right-4 bg-white hover:bg-stone-100 border-2 border-stone-300 text-stone-700 px-4 py-2 rounded-xl font-jua text-sm transition-all shadow-md flex items-center gap-2 z-10">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1236,9 +1244,9 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
             </div>
 
             {/* 우측: 버튼 영역 */}
-            <div className="w-[280px] shrink-0 flex flex-col gap-4">
-              <h3 className="text-2xl font-jua text-stone-800 mb-2">📋 준비물</h3>
-              <div className="flex flex-col gap-2 mb-4">
+            <div className="w-[280px] shrink-0 flex flex-col gap-4 min-h-0">
+              <h3 className="text-2xl font-jua text-stone-800 mb-2 shrink-0">📋 준비물</h3>
+              <div className="flex flex-col gap-2 mb-4 overflow-y-auto flex-1 min-h-0">
                 {selectedClass.materials.map((material, idx) => (
                   <span
                     key={idx}
