@@ -254,14 +254,14 @@ const WelcomeScreen = ({ onStartToday, onExplore }) => {
     <div className="h-full w-full flex flex-col items-center justify-center bg-[#FAF7F1] p-8 animate-fadeIn">
       <div className="max-w-2xl w-full flex flex-col items-start">
         {/* Greeting Bubble */}
-        <div className="bg-[#FFE5D4] px-6 py-3 rounded-full mb-8 inline-block">
-          <span className="text-[#D85718] font-jua text-xl font-bold">
+        <div className="bg-[#FFE5D4] px-8 py-4 rounded-full mb-10 inline-block">
+          <span className="text-[#D85718] font-jua text-2xl font-bold">
             성남복지관 그림약방에 오신 것을 환영합니다! 💊
           </span>
         </div>
 
         {/* Main Question */}
-        <div className="mb-8">
+        <div className="mb-10">
           <h1 className="text-6xl font-jua text-stone-900 mb-2 leading-tight">
             김미순 님,
           </h1>
@@ -341,7 +341,7 @@ const CoachMark = ({ onDismiss }) => {
     {
       target: "studio",
       title: "창작실",
-      desc: "창작실 메인 화면입니다.\n다양한 미술 활동을 선택할 수 있습니다.",
+      desc: "창작실 메인 화면입니다.\n두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다.",
       style: { top: "100px", right: "360px" }
     },
     {
@@ -576,7 +576,7 @@ const App = () => {
           <div className="h-full relative bg-[#FAF7F1]">
             <VoiceGuideButton 
               position="top-right" 
-              text="창작실 메인 화면입니다. 다양한 미술 활동을 선택할 수 있습니다."
+              text="창작실 메인 화면입니다. 두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다."
             />
             <Screen2_StudioMain
               onNav={navigateTo}
