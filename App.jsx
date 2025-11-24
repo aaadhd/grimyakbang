@@ -660,7 +660,7 @@ const App = () => {
               <div className="flex items-center gap-3">
                 <div className="bg-stone-100 p-2 rounded-full">
                   <User size={24} className="text-stone-600" />
-                </div>
+              </div>
                 <span className="text-stone-700 font-gowun text-xl sm:text-2xl font-bold">
                   김미순 님
                 </span>
@@ -716,10 +716,10 @@ const App = () => {
         </div>
         )}
 
-          {/* Main Content */}
-          <main className="flex-1 overflow-hidden relative bg-[#FDFBF7] flex flex-col min-h-0">
-            {renderScreen()}
-          </main>
+        {/* Main Content */}
+        <main className="flex-1 overflow-hidden relative bg-[#FDFBF7] flex flex-col min-h-0">
+          {renderScreen()}
+        </main>
           
           {/* Coach Mark - Moved inside pad-frame */}
           {showCoachMark && <CoachMark onDismiss={() => setShowCoachMark(false)} />}
@@ -965,35 +965,35 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
     },
   ];
 
-    return (
+  return (
       <div className="h-full flex flex-col p-8 animate-fadeIn overflow-hidden">
-        {/* Header with Week Navigation */}
+      {/* Header with Week Navigation */}
         <div className="mb-6 shrink-0">
           <div className="flex items-center justify-between">
-            <button
-              onClick={() => setCurrentWeekOffset(currentWeekOffset - 1)}
-              className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-50 hover:border-orange-400 transition flex items-center justify-center"
-            >
-              <ChevronLeft size={28} className="text-stone-600" />
-            </button>
-            <div className="flex-1 text-center">
+          <button
+            onClick={() => setCurrentWeekOffset(currentWeekOffset - 1)}
+            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-50 hover:border-orange-400 transition flex items-center justify-center"
+          >
+            <ChevronLeft size={28} className="text-stone-600" />
+          </button>
+          <div className="flex-1 text-center">
               <h2 className="text-4xl font-jua text-stone-800 mb-2">
-                {currentWeekOffset === 0 ? "이번 주" : currentWeekOffset === -1 ? "지난 주" : "다음 주"} 수업 일정
-              </h2>
-              <p className="text-lg font-gowun text-stone-600">
-                {weekRange.start} ~ {weekRange.end}
-              </p>
-            </div>
-            <button
-              onClick={() => setCurrentWeekOffset(currentWeekOffset + 1)}
-              className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-50 hover:border-orange-400 transition flex items-center justify-center"
-            >
-              <ChevronRight size={28} className="text-stone-600" />
-            </button>
+              {currentWeekOffset === 0 ? "이번 주" : currentWeekOffset === -1 ? "지난 주" : "다음 주"} 수업 일정
+            </h2>
+            <p className="text-lg font-gowun text-stone-600">
+              {weekRange.start} ~ {weekRange.end}
+            </p>
           </div>
+          <button
+            onClick={() => setCurrentWeekOffset(currentWeekOffset + 1)}
+            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-50 hover:border-orange-400 transition flex items-center justify-center"
+          >
+            <ChevronRight size={28} className="text-stone-600" />
+          </button>
         </div>
+      </div>
 
-        {/* Weekly Schedule Grid */}
+      {/* Weekly Schedule Grid */}
         <div className="grid grid-cols-3 gap-4">
         {weeklySchedule.map((classItem) => (
           <div
@@ -1077,14 +1077,14 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
           >
             {/* 좌측: 정보 영역 */}
             <div className="flex-1 pr-4 flex flex-col">
-              <button
-                onClick={() => setSelectedClass(null)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 text-stone-400 transition z-10"
-              >
-                <X size={28} />
-              </button>
+            <button
+              onClick={() => setSelectedClass(null)}
+              className="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 text-stone-400 transition z-10"
+            >
+              <X size={28} />
+            </button>
 
-              <div className="mb-6">
+            <div className="mb-6">
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <span className={`px-4 py-2 rounded-full text-lg font-jua font-bold ${
                   selectedClass.isToday
@@ -1107,8 +1107,8 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
               </div>
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <h2 className="text-3xl font-jua text-stone-800">
-                  {selectedClass.title}
-                </h2>
+                {selectedClass.title}
+              </h2>
                 <span className={`px-3 py-1 rounded-lg font-jua text-lg ${
                   selectedClass.type === 'kit' ? 'bg-purple-100 text-purple-700' :
                   selectedClass.type === 'digital' ? 'bg-blue-100 text-blue-700' :
@@ -1149,7 +1149,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                   </p>
                 </div>
               </div>
-            </div>
+              </div>
             </div>
 
             {/* 우측: 버튼 영역 */}
@@ -1169,40 +1169,40 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
               <div className="border-t-2 border-stone-200 pt-4 mt-auto space-y-3">
                 {/* 1. 연계 디지털 활동 버튼 */}
                 {selectedClass.linkedActivityId && (
-                  <button
-                    onClick={() => {
+                        <button
+                          onClick={() => {
                       onStartActivity(selectedClass.linkedActivityId);
-                      setSelectedClass(null);
-                    }}
+                            setSelectedClass(null);
+                          }}
                     className="w-full btn-primary bg-orange-500 hover:bg-orange-600 border-orange-600 text-white text-lg h-[64px] font-jua shadow-md flex items-center justify-center gap-2"
-                  >
+                        >
                     <Palette size={22} />
                     디지털 활동 시작
-                  </button>
+                        </button>
                 )}
 
                 {/* 2. 작품 사진 기록하기 (키트/하이브리드 활동만 노출) */}
                 {(selectedClass.type === 'kit' || selectedClass.type === 'hybrid') && (
-                  <button
-                    onClick={() => {
+                      <button
+                        onClick={() => {
                         alert("📷 카메라가 실행됩니다.\n완성한 작품을 촬영하여 갤러리에 보관하세요!");
                         onNav("gallery");
-                        setSelectedClass(null);
-                    }}
+                          setSelectedClass(null);
+                        }}
                     className="w-full btn-primary bg-stone-700 hover:bg-stone-800 border-stone-800 text-white text-lg h-[64px] font-jua shadow-md flex items-center justify-center gap-2"
                   >
                     <ImageIcon size={22} />
                     작품 사진 기록
-                  </button>
+                      </button>
                 )}
 
                 {/* 3. 닫기 */}
-                <button
-                  onClick={() => setSelectedClass(null)}
+                  <button
+                    onClick={() => setSelectedClass(null)}
                   className="w-full btn-primary bg-white hover:bg-stone-50 border-2 border-stone-300 text-stone-700 text-lg h-[56px] font-jua"
-                >
-                  닫기
-                </button>
+                  >
+                    닫기
+                  </button>
               </div>
             </div>
           </div>
@@ -1279,29 +1279,29 @@ const Screen1_Home = ({ onNav, onCategoryNav, onStartActivity }) => {
 
   return (
     <div className="h-full flex flex-col p-8 gap-6 animate-fadeIn overflow-hidden">
-      {/* Today's Class Info */}
-      {todayClass && (
+    {/* Today's Class Info */}
+    {todayClass && (
         <div className="flex-none card-base bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 p-8 shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
               {/* 1. 상단: 오늘의 수업 배지 & 날짜 */}
               <div className="flex items-center gap-4 mb-3">
                 <div className="bg-blue-500 text-white px-5 py-2 rounded-full font-jua text-xl font-bold shadow-sm">
-                  오늘의 수업 📚
-                </div>
+                오늘의 수업 📚
+              </div>
                 <div className="flex items-center gap-2 text-stone-500">
                   <Calendar size={24} />
                   <span className="font-gowun text-xl font-bold">
                     {todayClass.date.replace('/', '월 ')}일 {todayClass.day}요일
                   </span>
-                </div>
               </div>
+            </div>
 
               {/* 2. 중단: 타이틀 & 활동 유형 배너 */}
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <h3 className="text-[2.5rem] font-jua text-stone-800 leading-tight">
                   {todayClass.title}
-                </h3>
+            </h3>
                 {todayClass.type && (
                   <div className={`px-4 py-1.5 rounded-lg font-jua text-lg ${
                     todayClass.type === 'kit' ? 'bg-purple-100 text-purple-700' :
@@ -1318,25 +1318,25 @@ const Screen1_Home = ({ onNav, onCategoryNav, onStartActivity }) => {
               {/* 3. 하단: 설명 */}
               <p className="text-2xl font-gowun text-stone-600 mb-2">
                 {todayClass.desc}
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                const activityId = getActivityIdFromTitle(todayClass.title);
-                if (activityId) {
-                  onStartActivity(activityId);
-                } else {
-                  // 활동이 없는 경우 (예: 키트 활동) 수업 일정 화면으로 이동
-                  onNav("weekly", "weekly");
-                }
-              }}
-              className="btn-primary bg-blue-500 hover:bg-blue-600 border-blue-600 text-white px-8 py-4 rounded-2xl font-jua text-2xl shrink-0 ml-6 h-[72px] shadow-lg"
-            >
-              수업 바로 가기
-            </button>
+            </p>
           </div>
+          <button
+            onClick={() => {
+              const activityId = getActivityIdFromTitle(todayClass.title);
+              if (activityId) {
+                onStartActivity(activityId);
+              } else {
+                  // 활동이 없는 경우 (예: 키트 활동) 수업 일정 화면으로 이동
+                onNav("weekly", "weekly");
+              }
+            }}
+              className="btn-primary bg-blue-500 hover:bg-blue-600 border-blue-600 text-white px-8 py-4 rounded-2xl font-jua text-2xl shrink-0 ml-6 h-[72px] shadow-lg"
+          >
+            수업 바로 가기
+          </button>
         </div>
-      )}
+      </div>
+    )}
 
     {/* 1. Today's Art Prescription (Hero Section) */}
     <div className="flex-none flex-[1.8] card-base flex flex-row relative overflow-hidden bg-white border-2 border-yellow-400 shadow-md shrink-0 min-h-0 p-0">
@@ -1481,40 +1481,40 @@ const StudioCard = ({ title, desc, tags, icon: Icon, color, onClick }) => (
   </button>
 );
 
-  /* 3️⃣ Screen 3: Studio List (Detailed Activities) */
+/* 3️⃣ Screen 3: Studio List (Detailed Activities) */
   const Screen3_StudioList = ({ categoryData, onStartActivity }) => {
     // memory(기억 스케치), voice(그때 그 시절), coloring(명화 컬러링), slow(빗소리 드로잉), free(자유 드로잉)
     const implementedActivities = ['memory', 'voice', 'coloring', 'slow', 'free']; 
   
     return (
-    <div className="h-full flex flex-col p-6 sm:p-8 animate-fadeIn">
-      <div className="mb-6 shrink-0 bg-stone-100 p-6 rounded-2xl border-2 border-stone-200 text-center">
-        <h2 className="text-3xl font-jua text-stone-800 mb-2">
-          {categoryData.title}
-        </h2>
-        <p className="text-xl text-stone-600 font-gowun">{categoryData.desc}</p>
-      </div>
-  
-      <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
+  <div className="h-full flex flex-col p-6 sm:p-8 animate-fadeIn">
+    <div className="mb-6 shrink-0 bg-stone-100 p-6 rounded-2xl border-2 border-stone-200 text-center">
+      <h2 className="text-3xl font-jua text-stone-800 mb-2">
+        {categoryData.title}
+      </h2>
+      <p className="text-xl text-stone-600 font-gowun">{categoryData.desc}</p>
+    </div>
+
+    <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
         {categoryData.activities.map((item, index) => {
           const isImplemented = implementedActivities.includes(item.id);
           
           return (
-          <ActivityListItem
-            key={index}
-            title={item.title}
-            desc={item.desc}
-            level={item.level}
-            time={item.time}
-            tag={item.tag}
+        <ActivityListItem
+          key={index}
+          title={item.title}
+          desc={item.desc}
+          level={item.level}
+          time={item.time}
+          tag={item.tag}
             disabled={!isImplemented}
             onClick={() => isImplemented && onStartActivity(item.id)}
-          />
+        />
           );
         })}
-      </div>
     </div>
-    );
+  </div>
+);
   };
 
 const ActivityListItem = ({ title, desc, level, time, tag, onClick, disabled }) => (
@@ -2303,6 +2303,14 @@ const MiniStatCard = ({ label, value }) => (
 /* 🤖 Screen 6: AI Dashboard (AI 분석 대시보드) */
 const Screen6_AI = ({ onNav }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  
+  // 특별한 날 이벤트 데이터 (이벤트가 있을 때만 표시)
+  const specialEvent = {
+    exists: true, // 이벤트가 있는지 여부
+    icon: "🎂",
+    title: "특별한 날",
+    description: "오늘은 손자 생일이네요! 축하 카드를 그려보시는 건 어떨까요?",
+  };
 
   const weeklyEmotions = [
     { day: "월", emotion: "행복", height: 75 },
@@ -2342,81 +2350,168 @@ const Screen6_AI = ({ onNav }) => {
     >
       {/* 메인 콘텐츠 */}
       <div className="flex-1 overflow-y-auto p-6 custom-scrollbar w-full">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6 pb-10">
-          {/* 왼쪽 열 */}
-          <div className="space-y-6">
-            {/* 주간 감정 변화 */}
-            <div className="card-base p-6 bg-white border-stone-200">
-              <h2 className="text-2xl font-jua text-stone-800 mb-6">주간 감정 변화</h2>
-              <div className="flex items-end justify-between gap-3 h-48">
-                {weeklyEmotions.map((item, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center justify-end gap-2">
-                    <div
-                      className="w-full rounded-t-xl transition-all hover:opacity-80 cursor-pointer active:scale-95"
-                      style={{
-                        height: `${item.height}%`,
-                        background: "linear-gradient(180deg, #5B9A8B 0%, #2D6A4F 100%)",
-                      }}
-                      title={`${item.day}: ${item.emotion}`}
-                    />
-                    <div className="text-center">
-                      <div className="text-base font-jua text-stone-600 mb-1">{item.day}</div>
-                      <div className="text-sm font-gowun text-stone-500">{item.emotion}</div>
-                    </div>
-                  </div>
-                ))}
+        <div className="max-w-7xl mx-auto space-y-6 pb-10">
+          {/* 특별한 날 배너 - 풀 너비, 이벤트가 있을 때만 표시 */}
+          {specialEvent.exists && (
+            <div className="card-base p-6 bg-white border-stone-200" style={{ background: "#F0F9F5" }}>
+              <div className="flex items-center gap-4">
+                <span className="text-5xl">{specialEvent.icon}</span>
+                <div className="flex-1">
+                  <h2 className="text-2xl font-jua text-stone-800 mb-2">{specialEvent.title}</h2>
+                  <p className="text-lg font-gowun text-stone-700">
+                    {specialEvent.description}
+                  </p>
+                </div>
+                <button
+                  onClick={() => onNav("studio_main", "studio")}
+                  className="btn-primary whitespace-nowrap px-8 py-3"
+                >
+                  <span className="text-xl font-jua">그리러 가기</span>
+                </button>
               </div>
             </div>
+          )}
 
-            {/* 정서적 안정 지수 (ESI) */}
-            <div className="card-base p-6 bg-white border-stone-200 relative">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-2xl font-jua text-stone-800">정서적 안정 지수 (ESI)</h2>
-                <button 
-                  className="w-8 h-8 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center hover:bg-stone-200 active:scale-90 transition-all z-10"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowTooltip(!showTooltip);
-                  }}
-                >
-                  ?
-                </button>
-                {showTooltip && (
-                  <div className="absolute top-14 left-6 z-20 bg-stone-800 text-white p-4 rounded-xl shadow-xl max-w-sm animate-fadeIn border border-stone-700">
-                    <div className="font-jua text-lg mb-1 text-yellow-300">ESI란?</div>
-                    <p className="font-gowun text-base leading-relaxed">
-                      어르신의 마음이 얼마나 편안하고 안정적인지 보여주는 점수예요. 점수가 높을수록 마음이 평온하다는 뜻입니다.
-                    </p>
-                    <div className="absolute -top-2 left-8 w-4 h-4 bg-stone-800 transform rotate-45 border-t border-l border-stone-700"></div>
+          {/* 2열 그리드 */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* 왼쪽 열 */}
+            <div className="space-y-6 flex flex-col">
+            {/* 주간 감정 변화 */}
+            <div className="card-base p-6 bg-white border-stone-200">
+              <h2 className="text-2xl font-jua text-stone-800 mb-4">주간 감정 변화</h2>
+              <p className="text-base font-gowun text-stone-500 mb-6">이번 주 감정 상태를 한눈에 확인하세요</p>
+
+              {/* 꺾은선 그래프 */}
+              <div className="relative bg-gradient-to-br from-stone-50 to-orange-50/30 rounded-2xl p-8 border-2 border-stone-100 shadow-inner">
+                {/* 그래프 영역 */}
+                <div className="relative h-64">
+                  {/* Y축 가이드라인 */}
+                  <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                    {[100, 75, 50, 25, 0].map((val) => (
+                      <div key={val} className="flex items-center gap-3">
+                        <span className="text-sm font-jua text-stone-500 w-10 text-right font-bold">{val}</span>
+                        <div className="flex-1 border-t border-stone-300/50 border-dashed"></div>
+                      </div>
+                    ))}
                   </div>
-                )}
-              </div>
-              
-              <div className="flex items-end gap-4 mb-4">
-                <div className="text-5xl font-jua text-[#5B9A8B]">
-                  8.2
-                </div>
-                <div className="flex-1">
-                  <div className="text-lg font-gowun text-stone-600 mb-2">초기 6.5 → 현재 8.2</div>
-                  <div className="w-full h-4 bg-stone-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all"
-                      style={{
-                        width: "82%",
-                        background: "linear-gradient(90deg, #5B9A8B 0%, #2D6A4F 100%)",
-                      }}
+
+                  {/* SVG 그래프 */}
+                  <svg 
+                    className="absolute left-12 top-0 right-0 bottom-0" 
+                    viewBox="0 0 500 256" 
+                    preserveAspectRatio="none"
+                    style={{ width: 'calc(100% - 3rem)', height: '100%' }}
+                  >
+                    <defs>
+                      {/* 선 그림자 효과 */}
+                      <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+
+                    {/* 선 그리기 - 더 굵고 부드러운 곡선 */}
+                    <polyline
+                      points={weeklyEmotions.map((item, idx) => {
+                        const svgHeight = 256;
+                        const svgWidth = 500;
+                        const numItems = weeklyEmotions.length;
+                        // 각 요일 라벨의 중심 위치에 맞춰 계산
+                        const x = ((idx + 0.5) / numItems) * svgWidth;
+                        const y = svgHeight - (item.height * svgHeight / 100);
+                        return `${x},${y}`;
+                      }).join(' ')}
+                      fill="none"
+                      stroke="#F97316"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      filter="url(#glow)"
                     />
-                  </div>
+
+                    {/* 데이터 포인트 - 더 크고 눈에 띄게 */}
+                    {weeklyEmotions.map((item, idx) => {
+                      const svgHeight = 256;
+                      const svgWidth = 500;
+                      const numItems = weeklyEmotions.length;
+                      // 각 요일 라벨의 중심 위치에 맞춰 계산
+                      const x = ((idx + 0.5) / numItems) * svgWidth;
+                      const y = svgHeight - (item.height * svgHeight / 100);
+                      return (
+                        <g key={idx} className="cursor-pointer group">
+                          {/* 외부 그림자 원 */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="8"
+                            fill="#F97316"
+                            opacity="0.2"
+                          />
+                          {/* 흰색 외곽선 원 */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="7"
+                            fill="white"
+                            stroke="#F97316"
+                            strokeWidth="3"
+                          />
+                          {/* 내부 채워진 원 */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="4.5"
+                            fill="#F97316"
+                          />
+                          {/* 상시 값 표시 */}
+                          <text
+                            x={x}
+                            y={y - 15}
+                            textAnchor="middle"
+                            fill="#F97316"
+                            fontSize="12"
+                            fontWeight="bold"
+                          >
+                            {item.height}점
+                          </text>
+                        </g>
+                      );
+                    })}
+                  </svg>
+                </div>
+
+                {/* X축 라벨 - 더 명확하고 큰 디자인 */}
+                <div className="flex justify-between items-start mt-8 pl-12">
+                  {weeklyEmotions.map((item, idx) => (
+                    <div key={idx} className="flex flex-col items-center gap-2 flex-1">
+                      <div className="text-xl font-jua text-stone-700 font-bold">{item.day}</div>
+                      <div className="text-sm font-gowun text-stone-600 bg-white px-3 py-1.5 rounded-full border-2 border-stone-200 shadow-sm">
+                        {item.emotion}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-lg font-gowun text-stone-600">
-                <span className="text-2xl">📈</span>
-                <span>26% 개선됨</span>
+
+              {/* 평균 점수 표시 */}
+              <div className="mt-6 flex items-center justify-between bg-gradient-to-r from-orange-50 to-amber-50 p-5 rounded-xl border-2 border-orange-200 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="bg-orange-100 p-2 rounded-full">
+                    <span className="text-2xl">📊</span>
+                  </div>
+                  <span className="text-xl font-jua text-stone-800 font-bold">주간 평균</span>
+                </div>
+                <div className="text-3xl font-jua text-orange-600 font-bold">
+                  {Math.round(weeklyEmotions.reduce((sum, item) => sum + item.height, 0) / weeklyEmotions.length)}점
+                </div>
               </div>
             </div>
 
             {/* 색상 선호도 */}
-            <div className="card-base p-6 bg-white border-stone-200">
+            <div className="card-base p-6 bg-white border-stone-200 flex-1 flex flex-col">
               <h2 className="text-2xl font-jua text-stone-800 mb-4">색상 선호도</h2>
               <div className="space-y-4">
                 {colorPreferences.map((item, idx) => (
@@ -2437,42 +2532,70 @@ const Screen6_AI = ({ onNav }) => {
             </div>
           </div>
 
-          {/* 오른쪽 열 */}
-          <div className="space-y-6">
-            {/* 특별한 날 */}
-            <div className="card-base p-6 bg-white border-stone-200" style={{ background: "#F0F9F5" }}>
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-5xl">🎂</span>
-                <div className="flex-1">
-                  <h2 className="text-2xl font-jua text-stone-800 mb-2">특별한 날</h2>
-                  <p className="text-lg font-gowun text-stone-700">
-                    오늘은 손자 생일이네요! 축하 카드를 그려보시는 건 어떨까요?
-                  </p>
+            {/* 오른쪽 열 */}
+            <div className="flex flex-col space-y-6">
+              {/* 정서적 안정 지수 (ESI) */}
+              <div className="card-base p-6 bg-white border-stone-200 relative">
+                <div className="flex items-center gap-2 mb-4">
+                  <h2 className="text-2xl font-jua text-stone-800">정서적 안정 지수 (ESI)</h2>
+                  <button 
+                    className="w-8 h-8 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center hover:bg-stone-200 active:scale-90 transition-all z-10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowTooltip(!showTooltip);
+                    }}
+                  >
+                    ?
+                  </button>
+                  {showTooltip && (
+                    <div className="absolute top-14 left-6 z-20 bg-stone-800 text-white p-4 rounded-xl shadow-xl max-w-sm animate-fadeIn border border-stone-700">
+                      <div className="font-jua text-lg mb-1 text-yellow-300">ESI란?</div>
+                      <p className="font-gowun text-base leading-relaxed">
+                        어르신의 마음이 얼마나 편안하고 안정적인지 보여주는 점수예요. 점수가 높을수록 마음이 평온하다는 뜻입니다.
+                      </p>
+                      <div className="absolute -top-2 left-8 w-4 h-4 bg-stone-800 transform rotate-45 border-t border-l border-stone-700"></div>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex items-end gap-4 mb-4">
+                  <div className="text-5xl font-jua text-[#5B9A8B]">
+                    8.2
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-lg font-gowun text-stone-600 mb-2">초기 6.5 → 현재 8.2</div>
+                    <div className="w-full h-4 bg-stone-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{
+                          width: "82%",
+                          background: "linear-gradient(90deg, #5B9A8B 0%, #2D6A4F 100%)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-lg font-gowun text-stone-600">
+                  <span className="text-2xl">📈</span>
+                  <span>26% 개선됨</span>
                 </div>
               </div>
-              <button
-                onClick={() => onNav("studio_main", "studio")}
-                className="w-full btn-primary"
-              >
-                <span className="text-xl font-jua">그리러 가기</span>
-              </button>
-            </div>
 
-            {/* 생체 리듬 분석 */}
+              {/* 생체 리듬 분석 */}
             <div className="card-base p-6 bg-white border-stone-200">
               <h2 className="text-2xl font-jua text-stone-800 mb-4">생체 리듬 분석</h2>
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-stone-50">
-                  <div className="text-base font-gowun text-stone-500 mb-1">최적 활동 시간</div>
-                  <div className="text-xl font-jua text-stone-800">오전 10시 - 11시 30분</div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-stone-100">
+                  <span className="text-base font-gowun text-stone-500">최적 활동 시간</span>
+                  <span className="text-xl font-jua text-stone-800">오전 10시 - 11시 30분</span>
                 </div>
-                <div className="p-4 rounded-xl bg-stone-50">
-                  <div className="text-base font-gowun text-stone-500 mb-1">평균 집중 시간</div>
-                  <div className="text-xl font-jua text-stone-800">25분</div>
+                <div className="flex items-center justify-between py-2 border-b border-stone-100">
+                  <span className="text-base font-gowun text-stone-500">평균 집중 시간</span>
+                  <span className="text-xl font-jua text-stone-800">25분</span>
                 </div>
-                <div className="p-4 rounded-xl bg-stone-50">
-                  <div className="text-base font-gowun text-stone-500 mb-1">선호 활동 유형</div>
-                  <div className="text-xl font-jua text-stone-800">색칠하기 {'>'} 그리기 {'>'} 게임</div>
+                <div className="flex items-center justify-between py-2 border-b border-stone-100">
+                  <span className="text-base font-gowun text-stone-500">선호 활동 유형</span>
+                  <span className="text-xl font-jua text-stone-800">색칠하기 {'>'} 그리기 {'>'} 게임</span>
                 </div>
               </div>
               <div className="mt-4 p-4 rounded-xl bg-green-50 border border-green-200">
@@ -2483,9 +2606,9 @@ const Screen6_AI = ({ onNav }) => {
             </div>
 
             {/* AI 피드백 */}
-            <div className="card-base p-6 bg-white border-stone-200">
+            <div className="card-base p-6 bg-white border-stone-200 flex-1 flex flex-col">
               <h2 className="text-2xl font-jua text-stone-800 mb-4">AI 피드백</h2>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 {aiFeedbacks.map((feedback, idx) => (
                   <div key={idx} className="p-4 rounded-xl bg-stone-50 border border-stone-200">
                     <div className="flex items-start gap-3">
@@ -2496,6 +2619,7 @@ const Screen6_AI = ({ onNav }) => {
                 ))}
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -2979,17 +3103,17 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
       {/* Header Toolbar */}
       <div className="bg-white p-3 flex items-center justify-between shadow-sm shrink-0 z-10 px-6">
         <div className="flex items-center gap-4">
-          <button
-            onClick={onBack}
+        <button
+          onClick={onBack}
             className="flex items-center justify-center w-12 h-12 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-full transition-colors"
-          >
+        >
             <ArrowLeft size={24} />
-          </button>
+        </button>
           <div className="flex items-center gap-2">
             <span className="text-2xl">{customTitle ? "🌅" : "🎨"}</span>
             <h2 className="text-xl sm:text-2xl font-jua text-stone-800">{customTitle || "자유 드로잉"}</h2>
           </div>
-        </div>
+      </div>
 
         <div className="flex items-center gap-2 bg-stone-100 p-1.5 rounded-xl">
           <button className="p-3 hover:bg-white rounded-lg text-stone-600 hover:text-stone-900 transition-all shadow-sm" title="실행 취소">
@@ -3017,14 +3141,14 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
         {/* Left Toolbar (Tools) */}
         <div className="w-[110px] bg-white border-r border-stone-200 flex flex-col items-center py-6 gap-4 shrink-0 shadow-[2px_0_10px_rgba(0,0,0,0.02)] z-10 overflow-y-auto custom-scrollbar">
           {/* AI Magic Pen (Special Tool) */}
-          <button
+              <button
             onClick={() => setIsMagicMode(!isMagicMode)}
             className={`flex flex-col items-center justify-center w-20 h-24 rounded-2xl transition-all border-2 ${
               isMagicMode
                 ? "bg-indigo-100 border-indigo-300 text-indigo-600 shadow-md scale-105"
                 : "bg-white border-stone-200 text-stone-400 hover:bg-stone-50 hover:text-stone-600"
-            }`}
-          >
+                }`}
+              >
             <div className={`p-2 rounded-full mb-1 ${isMagicMode ? 'bg-white animate-pulse' : 'bg-stone-100'}`}>
               <Sparkles size={24} className={isMagicMode ? "text-indigo-500 fill-indigo-500" : "text-stone-400"} />
             </div>
@@ -3032,12 +3156,12 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
             <span className={`text-xs font-bold ${isMagicMode ? 'text-indigo-500' : 'text-stone-300'}`}>
               {isMagicMode ? 'ON' : 'OFF'}
             </span>
-          </button>
+              </button>
 
           <div className="w-16 h-[1px] bg-stone-200 shrink-0" />
 
           {tools.map((tool) => (
-            <button
+              <button
               key={tool.id}
               onClick={() => {
                 setActiveTool(tool.id);
@@ -3051,13 +3175,13 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
                 activeTool === tool.id
                   ? "bg-[#5B9A8B] text-white shadow-md scale-105 ring-4 ring-[#5B9A8B]/20 translate-x-2"
                   : "bg-stone-50 text-stone-400 hover:bg-stone-100 hover:text-stone-600"
-              }`}
-            >
+                }`}
+              >
               <tool.icon size={32} strokeWidth={2} className="mb-2" />
               <span className="text-base font-jua">{tool.label}</span>
-            </button>
+              </button>
           ))}
-        </div>
+            </div>
 
         {/* Center Canvas Area */}
         <div className="flex-1 bg-[#F0F4F8] p-6 flex items-center justify-center relative overflow-hidden">
@@ -3104,14 +3228,14 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
           <div className="flex flex-col items-center gap-2 w-full px-2">
             <span className="font-jua text-stone-500 text-base">선 굵기</span>
             <div className="bg-stone-50 p-2 rounded-2xl w-full flex flex-col items-center gap-2 border border-stone-100">
-              <button 
+                <button
                 onClick={() => setSelectedWidth(Math.min(40, selectedWidth + 3))}
                 className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center text-stone-600 hover:bg-stone-100 text-xl font-bold"
               >+</button>
               <div className="w-14 h-14 flex items-center justify-center bg-white rounded-xl border border-stone-200 shadow-inner">
                 <div 
                   className="rounded-full bg-stone-800 transition-all"
-                  style={{ 
+                  style={{
                     width: Math.min(40, selectedWidth), 
                     height: Math.min(40, selectedWidth),
                     backgroundColor: activeTool === 'eraser' ? '#ddd' : selectedColor,
@@ -3124,7 +3248,7 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
                 className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center text-stone-600 hover:bg-stone-100 text-xl font-bold"
               >-</button>
             </div>
-          </div>
+            </div>
 
           <div className="w-16 h-[2px] bg-stone-100 rounded-full my-2" />
 
@@ -3133,7 +3257,7 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
              <span className="font-jua text-stone-500 text-base shrink-0">색상</span>
              <div className="grid grid-cols-2 gap-2 w-full">
                {colors.map((color) => (
-                  <button
+                <button
                     key={color}
                     onClick={() => {
                       setSelectedColor(color);
@@ -3149,9 +3273,9 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
                         <Check size={16} className={color === "#FFFFFF" ? "text-stone-400" : "text-white"} />
                       </div>
                     )}
-                  </button>
-                ))}
-             </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -3224,12 +3348,12 @@ const Activity_VoiceArt = ({ onBack }) => {
     <div className="h-full flex flex-col bg-stone-50 animate-fadeIn p-4 overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-center mb-6 shrink-0">
-        <button
-          onClick={onBack}
+          <button
+            onClick={onBack}
           className="flex items-center gap-2 text-stone-600 hover:text-stone-900 font-jua text-xl sm:text-2xl bg-white px-6 py-3 rounded-xl shadow-sm"
-        >
+          >
           <ArrowLeft size={28} /> 그만하기
-        </button>
+          </button>
         <div className="bg-orange-100 px-6 py-2 rounded-full">
           <span className="text-orange-600 font-jua text-xl sm:text-2xl">
             🎙️ 말하는 대로 그려지는 추억 캔버스
