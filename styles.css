@@ -9,7 +9,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #1c1917;
+  background-color: #1A1614;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +36,7 @@
 .pad-frame {
   width: 1280px;
   height: 800px;
-  background-color: #FDFBF7;
+  background-color: #FAF7F1;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -46,7 +46,7 @@
 }
 
 .btn-primary {
-  background-color: #5B9A8B;
+  background-color: #4C8F7E;
   color: white;
   border-radius: 16px;
   font-family: 'Jua', sans-serif;
@@ -56,8 +56,8 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 4px 0 #2D6A4F;
-  border: 2px solid #2D6A4F;
+  box-shadow: 0 4px 0 #265C43;
+  border: 2px solid #265C43;
   flex-shrink: 0;
 }
 
@@ -67,7 +67,6 @@
 }
 
 .card-base {
-  background: white;
   border-radius: 20px;
   border: 2px solid #E5E5E5;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -102,5 +101,209 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Hall of Fame Section Styles */
+.hof-wrapper {
+  background: #f8f6f2;
+  padding: 24px 20px;
+  border-radius: 20px;
+  margin: 0 auto 32px;
+  border: 1px solid #ece7df;
+  max-width: 900px;
+}
+
+.hof-section {
+  padding: 0;
+}
+
+.hof-section__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.hof-section__icon {
+  font-size: 26px;
+}
+
+.hof-section__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d2a26;
+  font-family: 'Jua', sans-serif;
+}
+
+.hof-section__subtitle {
+  font-size: 13px;
+  color: #7b766f;
+  font-family: 'Gowun Dodum', sans-serif;
+}
+
+.hof-section__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.hof-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  overflow: visible;
+  min-height: 180px;
+}
+
+.hof-card--best {
+  background: linear-gradient(135deg, #f4dcb3, #ecc894);
+  animation: hof-glow 2.4s ease-in-out infinite alternate;
+}
+
+.hof-card--ai {
+  background: linear-gradient(135deg, #d6d9ff, #c5caf8);
+}
+
+.hof-card__ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 700;
+  color: #3b3127;
+  margin-bottom: 8px;
+  font-family: 'Jua', sans-serif;
+}
+
+.hof-card__ribbon-icon {
+  font-size: 14px;
+}
+
+.hof-card__description {
+  font-size: 13px;
+  color: #5c5147;
+  margin-bottom: 12px;
+  font-family: 'Gowun Dodum', sans-serif;
+}
+
+.hof-card__thumb {
+  margin-bottom: 12px;
+}
+
+.hof-card__thumb-inner {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.hof-card__thumb-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hof-card__thumb-emoji {
+  font-size: 40px;
+  transform: none;
+}
+
+.hof-card__meta {
+  margin-bottom: 8px;
+}
+
+.hof-card__author {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2a26;
+  margin-bottom: 2px;
+  font-family: 'Jua', sans-serif;
+}
+
+.hof-card__author-center {
+  margin-left: 4px;
+  font-weight: 400;
+  color: #5f574f;
+  font-family: 'Gowun Dodum', sans-serif;
+}
+
+.hof-card__artwork-title {
+  font-size: 13px;
+  color: #4a4036;
+  font-family: 'Jua', sans-serif;
+}
+
+.hof-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hof-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  font-family: 'Jua', sans-serif;
+}
+
+.hof-badge--primary {
+  background: rgba(59, 46, 22, 0.95);
+  color: #fff7e0;
+}
+
+.hof-badge--ghost {
+  background: rgba(255, 255, 255, 0.9);
+  color: #5b4d3d;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b342c;
+  font-family: 'Jua', sans-serif;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd4c9;
+}
+
+.section-divider::before {
+  margin-right: 8px;
+}
+
+.section-divider::after {
+  margin-left: 8px;
+}
+
+@keyframes hof-glow {
+  0% {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+  100% {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  }
 }
 
