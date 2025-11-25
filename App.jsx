@@ -961,7 +961,7 @@ const TabButton = ({ icon: Icon, label, id, active, onClick }) => {
         <Icon size={32} strokeWidth={active === id ? 3 : 2} />
       </div>
       <span
-        className={`text-lg sm:text-lg font-jua ${
+        className={`text-sm sm:text-lg font-jua whitespace-nowrap ${
           active === id ? "font-bold" : "font-medium"
         }`}
       >
