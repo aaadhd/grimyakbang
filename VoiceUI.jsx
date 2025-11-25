@@ -1,11 +1,72 @@
-import React, { useState } from "react";
-import { Volume2, Mic, CheckCircle } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Volume2, Mic, CheckCircle, X } from "lucide-react";
+
+// 전역 TTS 관리 (하나만 재생되도록)
+let currentUtterance = null;
+let currentInterval = null;
+
+// 모든 버튼 인스턴스의 상태 업데이트 함수들
+const buttonInstances = new Set();
+
+const notifyAllButtons = (isPlaying) => {
+  buttonInstances.forEach(updateFn => {
+    if (updateFn && typeof updateFn === 'function') {
+      updateFn(isPlaying);
+    }
+  });
+};
+
+// 음성 중지 함수 (외부에서 호출 가능)
+export const stopVoiceGuide = () => {
+  if (typeof window !== "undefined" && window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+  if (currentInterval) {
+    clearInterval(currentInterval);
+    currentInterval = null;
+  }
+  currentUtterance = null;
+  notifyAllButtons(false);
+};
 
 // ============================================
 // 1. 음성 안내 버튼 컴포넌트
 // ============================================
 export const VoiceGuideButton = ({ position = "top-right", text = "화면 안내를 시작합니다." }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const updateStateRef = useRef(null);
+
+  // 버튼 인스턴스 등록
+  useEffect(() => {
+    updateStateRef.current = setIsPlaying;
+    buttonInstances.add(setIsPlaying);
+    
+    return () => {
+      buttonInstances.delete(setIsPlaying);
+      updateStateRef.current = null;
+    };
+  }, []);
+
+  // speaking 상태 주기적 확인
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const checkInterval = setInterval(() => {
+      if (!window.speechSynthesis.speaking) {
+        setIsPlaying(false);
+        notifyAllButtons(false);
+        if (currentInterval) {
+          clearInterval(currentInterval);
+          currentInterval = null;
+        }
+        currentUtterance = null;
+      }
+    }, 100);
+
+    return () => {
+      clearInterval(checkInterval);
+    };
+  }, [isPlaying]);
 
   const handleClick = () => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
@@ -14,26 +75,71 @@ export const VoiceGuideButton = ({ position = "top-right", text = "화면 안내
     }
 
     // 기존 재생 중이면 중단
-    window.speechSynthesis.cancel();
-    
+    if (isPlaying || window.speechSynthesis.speaking) {
+      stopVoiceGuide();
+      return;
+    }
+
+    startPlayback();
+  };
+
+  const startPlayback = () => {
+    // 기존 재생 취소
+    stopVoiceGuide();
+
+    // 즉시 상태 변경
     setIsPlaying(true);
+    notifyAllButtons(true);
 
-    // TTS 재생
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "ko-KR";
-    utterance.rate = 0.9; // 약간 천천히
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
+    // 약간의 지연 후 재생
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ko-KR";
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
-    utterance.onend = () => {
-      setIsPlaying(false);
-    };
+      utterance.onstart = () => {
+        setIsPlaying(true);
+        notifyAllButtons(true);
+      };
 
-    utterance.onerror = () => {
-      setIsPlaying(false);
-    };
+      utterance.onend = () => {
+        setIsPlaying(false);
+        notifyAllButtons(false);
+        if (currentInterval) {
+          clearInterval(currentInterval);
+          currentInterval = null;
+        }
+        currentUtterance = null;
+      };
 
-    window.speechSynthesis.speak(utterance);
+      utterance.onerror = (error) => {
+        console.error("TTS Error:", error);
+        setIsPlaying(false);
+        notifyAllButtons(false);
+        if (currentInterval) {
+          clearInterval(currentInterval);
+          currentInterval = null;
+        }
+        currentUtterance = null;
+      };
+
+      currentUtterance = utterance;
+      window.speechSynthesis.speak(utterance);
+
+      // Chrome TTS 버그 방지
+      currentInterval = setInterval(() => {
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.resume();
+        } else {
+          if (currentInterval) {
+            clearInterval(currentInterval);
+            currentInterval = null;
+          }
+        }
+      }, 500);
+    }, 100);
   };
 
   const positionClasses = {
@@ -46,21 +152,32 @@ export const VoiceGuideButton = ({ position = "top-right", text = "화면 안내
   return (
     <button
       onClick={handleClick}
-      className={`${positionClasses[position]} z-50 flex items-center gap-2 px-4 py-3 bg-white border-2 border-stone-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-jua text-lg ${
+      style={{ 
+        fontSize: '18px',
+        width: '120px',
+        height: '56px'
+      }}
+      className={`${positionClasses[position]} z-50 flex items-center justify-center gap-2 px-3 py-3 bg-white border-2 border-stone-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-jua ${
         isPlaying ? "bg-[#4C8F7E] text-white border-[#4C8F7E]" : "text-stone-700"
       }`}
     >
-      <Volume2
-        size={24}
-        className={isPlaying ? "animate-pulse" : ""}
-      />
-      <span>{isPlaying ? "재생 중..." : "음성 안내"}</span>
-      {isPlaying && (
-        <div className="flex gap-1">
-          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
-          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-        </div>
+      {isPlaying ? (
+        <>
+          <span className="whitespace-nowrap">재생 중</span>
+          <div className="flex gap-1 flex-shrink-0">
+            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
+            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+          </div>
+        </>
+      ) : (
+        <>
+          <Volume2
+            size={24}
+            className="flex-shrink-0"
+          />
+          <span className="whitespace-nowrap">음성 안내</span>
+        </>
       )}
     </button>
   );

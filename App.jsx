@@ -40,7 +40,7 @@ import {
   Mic,
 } from "lucide-react";
 import "./styles.css";
-import { VoiceGuideButton, VoiceCommandModal, VoiceFeedbackToast } from "./VoiceUI";
+import { VoiceGuideButton, VoiceCommandModal, VoiceFeedbackToast, stopVoiceGuide } from "./VoiceUI";
 
 // --- 1. Drawing Engine Component (Reusable) ---
 const DrawingCanvas = ({ color, lineWidth, tool, onInteract, isMagicMode }) => {
@@ -255,7 +255,7 @@ const WelcomeScreen = ({ onStartToday, onExplore }) => {
       <div className="max-w-2xl w-full flex flex-col items-start">
         {/* Greeting Bubble */}
         <div className="bg-[#FFE5D4] px-8 py-4 rounded-full mb-10 inline-block">
-          <span className="text-[#D85718] font-jua text-2xl font-bold">
+          <span style={{ fontSize: '26px' }} className="text-[#D85718] font-jua font-bold">
             성남복지관 그림약방에 오신 것을 환영합니다! 💊
           </span>
         </div>
@@ -274,23 +274,25 @@ const WelcomeScreen = ({ onStartToday, onExplore }) => {
         </div>
 
         {/* Description */}
-        <p className="text-2xl font-gowun text-stone-700 mb-12 leading-relaxed">
+        <p style={{ fontSize: '28px' }} className="font-gowun text-stone-700 mb-12 leading-relaxed">
           어르신들의 기억·감정·작품을 한 곳에서 케어하는
           <br />
-          <span className="text-[#EB6A29] font-jua font-bold text-2xl">디지털 미술 약국, 그림약방</span>입니다.
+          <span className="text-[#EB6A29] font-jua font-bold text-3xl">디지털 미술 약국, 그림약방</span>입니다.
         </p>
 
         {/* Buttons */}
         <div className="flex flex-row gap-4 w-full">
           <button
             onClick={onStartToday}
-            className="btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] border-[#D85718] text-white text-2xl h-[72px] px-12 shadow-lg font-jua flex-1"
+            style={{ fontSize: '26px' }}
+            className="btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] border-[#D85718] text-white h-[72px] px-12 shadow-lg font-jua flex-1"
           >
             오늘의 수업 시작하기
           </button>
           <button
             onClick={onExplore}
-            className="btn-primary bg-white hover:bg-stone-100 border-2 border-[#EB6A29] text-[#EB6A29] text-2xl h-[72px] px-12 shadow-lg font-jua flex-1"
+            style={{ fontSize: '26px' }}
+            className="btn-primary bg-white hover:bg-stone-100 border-2 border-[#EB6A29] text-[#EB6A29] h-[72px] px-12 shadow-lg font-jua flex-1"
           >
             그림약방 즐기기
           </button>
@@ -336,19 +338,19 @@ const CoachMark = ({ onDismiss }) => {
       target: "weekly",
       title: "금주의 수업",
       desc: "금주의 수업 화면입니다.\n이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다.",
-      style: { top: "100px", right: "480px" }
+      style: { top: "100px", right: "380px" }
     },
     {
       target: "studio",
       title: "창작실",
       desc: "창작실 메인 화면입니다.\n두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다.",
-      style: { top: "100px", right: "360px" }
+      style: { top: "100px", right: "260px" }
     },
     {
       target: "gallery",
       title: "나의 갤러리",
       desc: "나의 갤러리입니다.\n내가 그린 작품들을 확인할 수 있습니다.",
-      style: { top: "100px", right: "240px" }
+      style: { top: "100px", right: "210px" }
     },
     {
       target: "community",
@@ -375,7 +377,7 @@ const CoachMark = ({ onDismiss }) => {
         {/* Skip Button */}
         <button 
           onClick={handleSkip}
-          className="absolute top-8 right-8 bg-black/30 hover:bg-black/50 text-white px-6 py-3 rounded-full font-jua text-xl backdrop-blur-md transition-all border border-white/20 z-50 flex items-center gap-2"
+          className="absolute bottom-8 right-8 bg-black/30 hover:bg-black/50 text-white px-6 py-3 rounded-full font-jua text-xl backdrop-blur-md transition-all border border-white/20 z-50 flex items-center gap-2"
         >
           건너뛰기 <X size={20} />
         </button>
@@ -463,6 +465,9 @@ const App = () => {
   }, []);
 
   const navigateTo = (screen, tab) => {
+    // 화면 전환 시 음성 안내 중지
+    stopVoiceGuide();
+
     setCurrentScreen(screen);
     if (tab) setActiveTab(tab);
   };
@@ -667,7 +672,7 @@ const App = () => {
               position="top-right" 
               text="AI 분석 화면입니다. 주간 감정 변화 그래프와 정서 안정 지수, 활동 분석을 확인할 수 있습니다."
             />
-            <Screen6_AI onNav={navigateTo} />
+            <Screen6_AI onNav={navigateTo} onCategoryNav={navigateToCategory} />
           </div>
         );
       case "admin":
@@ -679,9 +684,16 @@ const App = () => {
 
   // 코치마크 표시 여부 확인 함수
   const shouldShowCoachMark = () => {
+    // 임시: 항상 표시하도록 수정 (디버깅용)
+    // 원래 로직으로 복원하려면 아래 주석을 해제하고 위 return을 제거하세요
+    /*
     const hiddenDate = localStorage.getItem('hideCoachMarkDate');
     const today = new Date().toDateString();
-    return hiddenDate !== today;
+    const shouldShow = hiddenDate !== today;
+    console.log('코치마크 표시 여부:', { hiddenDate, today, shouldShow });
+    return shouldShow;
+    */
+    return true; // 임시로 항상 true 반환
   };
 
   // 환영 화면 표시 중이면 환영 화면만 보여주기
@@ -881,7 +893,7 @@ const EmotionChart = () => {
               >
                 <div className="w-1/2 rounded-t-full bg-blue-300 h-3 mb-2" />
               </div>
-              <span className="text-base font-gowun text-[#1F4F9E] mt-3">
+              <span className="text-lg font-gowun text-[#1F4F9E] mt-3">
                 {days[idx]}
               </span>
             </div>
@@ -893,7 +905,7 @@ const EmotionChart = () => {
         <p className="text-lg font-gowun text-blue-800">
           "이번 주는 전반적으로 <span className="font-bold border-b-2 border-blue-300">차분한 일주일</span>이었어요."
         </p>
-        <p className="text-base font-gowun text-stone-700 mt-2">
+        <p className="text-lg font-gowun text-stone-700 mt-2">
           비 오는 날엔 따뜻한 차 한 잔 어떠세요? 🍵
         </p>
       </div>
@@ -919,7 +931,7 @@ const TabButton = ({ icon: Icon, label, id, active, onClick }) => {
         <Icon size={32} strokeWidth={active === id ? 3 : 2} />
       </div>
       <span
-        className={`text-base sm:text-lg font-jua ${
+        className={`text-lg sm:text-lg font-jua ${
           active === id ? "font-bold" : "font-medium"
         }`}
       >
@@ -1055,14 +1067,14 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
       <div className="h-full flex flex-col p-8 animate-fadeIn overflow-hidden">
       {/* Header with Week Navigation */}
         <div className="mb-6 shrink-0">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center gap-6">
           <button
             onClick={() => setCurrentWeekOffset(currentWeekOffset - 1)}
-            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-100 hover:border-[#F29A5A] transition flex items-center justify-center"
+            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-100 hover:border-[#F29A5A] transition flex items-center justify-center shrink-0"
           >
             <ChevronLeft size={28} className="text-stone-700" />
           </button>
-          <div className="flex-1 text-center">
+          <div className="text-center">
               <h2 className="text-4xl font-jua text-stone-800 mb-2">
               {currentWeekOffset === 0 ? "이번 주" : currentWeekOffset === -1 ? "지난 주" : "다음 주"} 수업 일정
             </h2>
@@ -1072,7 +1084,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
           </div>
           <button
             onClick={() => setCurrentWeekOffset(currentWeekOffset + 1)}
-            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-100 hover:border-[#F29A5A] transition flex items-center justify-center"
+            className="p-3 rounded-full bg-white border-2 border-stone-200 hover:bg-stone-100 hover:border-[#F29A5A] transition flex items-center justify-center shrink-0"
           >
             <ChevronRight size={28} className="text-stone-700" />
           </button>
@@ -1087,7 +1099,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
             onClick={() => setSelectedClass(classItem)}
             className={`card-base border-2 p-6 hover:shadow-lg transition-all cursor-pointer group relative flex flex-col ${
               classItem.isToday
-                ? 'border-blue-400 ring-2 ring-[#C5D9FF] shadow-md !bg-[#D8E8FF]'
+                ? 'border-blue-400 ring-2 ring-[#C5D9FF] shadow-md !bg-[#E8F0FF]'
                 : classItem.completed
                 ? 'border-[#B5DFC7] !bg-white'
                 : 'border-stone-200 !bg-white hover:border-[#F29A5A] hover:!bg-stone-50'
@@ -1095,7 +1107,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
           >
             {/* 완료 체크 아이콘 */}
             {classItem.completed && (
-              <div className="absolute top-4 right-4 w-10 h-10 bg-#2E8C46 rounded-full flex items-center justify-center shadow-md z-10">
+              <div className="absolute top-4 right-4 w-10 h-10 bg-[#2E8C46] rounded-full flex items-center justify-center shadow-md z-10">
                 <Check size={24} className="text-white font-bold" strokeWidth={3} />
               </div>
             )}
@@ -1119,7 +1131,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                   }`}>
                     {classItem.day}요일
                   </span>
-                  <span className="text-stone-700 font-gowun text-base">
+                  <span className="text-stone-700 font-gowun text-lg">
                     {classItem.date}
                   </span>
                 </div>
@@ -1128,7 +1140,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                 }`}>
                   {classItem.title}
                 </h3>
-                <p className={`text-base sm:text-lg font-gowun mb-3 ${
+                <p className={`text-lg sm:text-lg font-gowun mb-3 ${
                   classItem.completed ? 'text-stone-700' : 'text-stone-700'
                 }`}>
                   {classItem.description}
@@ -1136,7 +1148,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
               </div>
             </div>
             <div className="flex items-center justify-end mt-auto">
-              <button className={`px-5 py-2.5 rounded-lg font-jua text-base flex items-center gap-2 shadow-sm ${
+              <button className={`px-5 py-2.5 rounded-lg font-jua text-lg flex items-center gap-2 shadow-sm ${
                 classItem.completed
                   ? 'bg-stone-200 text-stone-700 cursor-default'
                   : classItem.isToday
@@ -1186,7 +1198,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                   {selectedClass.date}
                 </span>
                 {selectedClass.completed && (
-                  <span className="bg-#2E8C46 text-white px-4 py-2 rounded-full text-base font-jua font-bold flex items-center gap-1">
+                  <span className="bg-[#2E8C46] text-white px-4 py-2 rounded-full text-base font-jua font-bold flex items-center gap-1">
                     <Check size={18} strokeWidth={3} />
                     수업 완료
                   </span>
@@ -1231,8 +1243,8 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                   <div className="w-16 h-16 bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] rounded-full flex items-center justify-center mx-auto shadow-lg cursor-pointer hover:bg-[#D85718] transition-all">
                     <Play size={28} className="text-white ml-1" />
                   </div>
-                  <p className="text-base font-gowun text-stone-700 mt-3">
-                    영상 미리보기
+                  <p className="text-lg font-gowun text-stone-700 mt-3">
+                    영상 보기
                   </p>
                 </div>
               </div>
@@ -1246,7 +1258,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                 {selectedClass.materials.map((material, idx) => (
                   <span
                     key={idx}
-                    className="bg-stone-100 text-stone-700 px-4 py-3 rounded-xl font-gowun text-base"
+                    className="bg-stone-100 text-stone-700 px-4 py-3 rounded-xl font-gowun text-lg"
                   >
                     • {material}
                   </span>
@@ -1417,7 +1429,8 @@ const Screen1_Home = ({ onNav, onCategoryNav, onStartActivity }) => {
                 onNav("weekly", "weekly");
               }
             }}
-              className="btn-primary bg-[#2A6CCF] hover:bg-[#2560B8] border-[#2560B8] text-white px-8 py-4 rounded-2xl font-jua text-2xl shrink-0 ml-6 h-[72px] shadow-lg"
+              style={{ fontSize: '25px' }}
+              className="btn-primary bg-[#2A6CCF] hover:bg-[#2560B8] border-[#2560B8] text-white px-8 py-4 rounded-2xl font-jua shrink-0 ml-6 h-[72px] shadow-lg"
           >
             수업 바로 가기
           </button>
@@ -1443,7 +1456,8 @@ const Screen1_Home = ({ onNav, onCategoryNav, onStartActivity }) => {
           밝은 색을 칠해보는 건 어떨까요?
         </p>
         <button
-          className="btn-primary w-full text-2xl h-[64px] shadow-[#FFD5B8] border-[#F29A5A] bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718]"
+          style={{ fontSize: '25px' }}
+          className="btn-primary w-full h-[64px] shadow-[#FFD5B8] border-[#F29A5A] bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718]"
           onClick={() => onCategoryNav("emotion")}
         >
           추천 활동 시작하기
@@ -1586,7 +1600,7 @@ const StudioCard = ({ title, desc, tags, icon, color, onClick }) => (
       {tags.map((tag, i) => (
         <span
           key={i}
-          className="bg-white/60 px-4 py-2 rounded-lg text-stone-700 font-gowun text-base"
+          className="bg-white/60 px-4 py-2 rounded-lg text-stone-700 font-gowun text-lg"
         >
           {tag}
         </span>
@@ -1800,7 +1814,7 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
                     <div className="absolute inset-0 bg-black/5 shadow-inner pointer-events-none"></div>
                     {/* Selected Badge */}
                     {item.shared && item.selectedCount > 0 && (
-                      <div className="absolute top-2 right-2 bg-#2E8C46 text-white px-2 py-1 rounded-lg text-xs font-bold shadow-lg z-10 flex items-center gap-1">
+                      <div className="absolute top-2 right-2 bg-[#2E8C46] text-white px-2 py-1 rounded-lg text-xs font-bold shadow-lg z-10 flex items-center gap-1">
                         <CheckCircle size={12} /> {item.selectedCount}
                       </div>
                     )}
@@ -1911,7 +1925,7 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
                   {/* Selected Badge */}
                   {artwork.shared && artwork.selectedCount > 0 && (
                     <>
-                      <div className="absolute top-3 right-3 bg-#2E8C46 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg z-10 flex items-center gap-1.5">
+                      <div className="absolute top-3 right-3 bg-[#2E8C46] text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg z-10 flex items-center gap-1.5">
                         <CheckCircle size={16} /> {artwork.selectedCount}
                       </div>
                       {/* 선택 받은 작품 전용 장식 */}
@@ -1928,12 +1942,12 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
                   <h3 className="text-2xl font-jua text-stone-800 truncate">
                     {artwork.title}
                   </h3>
-                  <div className="flex items-center gap-2 text-base font-gowun text-stone-700">
+                  <div className="flex items-center gap-2 text-lg font-gowun text-stone-700">
                     <span className="bg-white px-3 py-1 rounded-lg text-sm">
                       {artwork.category}
                     </span>
                   </div>
-                  <p className="text-base font-gowun text-stone-400">
+                  <p className="text-lg font-gowun text-stone-400">
                     {artwork.date}
                   </p>
                 </div>
@@ -1942,13 +1956,13 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
                 <div className="mt-4 flex gap-2">
                   <button 
                     onClick={() => setSelectedArtwork(artwork)}
-                    className="flex-1 bg-white hover:bg-[#E8F7ED] text-stone-700 hover:text-[#1E5A2E] px-4 py-2 rounded-lg font-jua text-base transition border border-stone-200 hover:border-[#B5DFC7]"
+                    className="flex-1 bg-white hover:bg-[#E8F7ED] text-stone-700 hover:text-[#1E5A2E] px-4 py-2 rounded-lg font-jua text-lg transition border border-stone-200 hover:border-[#B5DFC7]"
                   >
                     보기
                   </button>
                   <button 
                     onClick={() => handleShareArtwork(artwork.id, false)}
-                    className={`flex-1 px-4 py-2 rounded-lg font-jua text-base transition border flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 px-4 py-2 rounded-lg font-jua text-lg transition border flex items-center justify-center gap-1.5 ${
                       artwork.shared
                         ? 'bg-[#DBF2E3] text-[#1E5A2E] hover:bg-[#C8E9D5] border-[#B5DFC7]'
                         : 'bg-white hover:bg-[#FFF5EF] text-stone-700 hover:text-orange-700 border-stone-200 hover:border-[#FFC89C]'
@@ -1985,18 +1999,22 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
 
       {/* Artwork Detail Modal */}
       {selectedArtwork && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-fadeIn" onClick={() => setSelectedArtwork(null)}>
-          <div className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-2xl border-2 border-stone-200 relative flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-8 animate-fadeIn" onClick={() => setSelectedArtwork(null)}>
+          <div 
+            className="bg-white rounded-3xl p-8 w-[90%] max-w-[1000px] shadow-2xl border-2 border-stone-200 relative flex flex-col"
+            style={{ maxHeight: '85%' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setSelectedArtwork(null)}
-              className="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 text-stone-400 transition"
+              className="absolute -top-12 right-0 p-2 rounded-full hover:bg-black/20 bg-black/10 text-white transition z-10"
             >
               <X size={28} />
             </button>
 
-            <div className="flex flex-col sm:flex-row gap-6 mb-6">
+            <div className="flex flex-col sm:flex-row gap-6 min-h-0 overflow-y-auto">
               {/* Artwork Image */}
-              <div className={`${selectedArtwork.color} rounded-2xl p-8 flex items-center justify-center aspect-square min-w-[200px] ${
+              <div className={`${selectedArtwork.color} rounded-2xl p-8 flex items-center justify-center aspect-[4/3] min-w-[200px] shrink-0 ${
                 selectedArtwork.shared 
                   ? 'border-4 border-yellow-400 shadow-yellow-200/50' 
                   : 'border-2 border-stone-200'
@@ -2007,11 +2025,11 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
               </div>
 
               {/* Artwork Info */}
-              <div className="flex-1 flex flex-col justify-between">
-                <div>
+              <div className="flex-1 flex flex-col justify-between min-h-0">
+                <div className="shrink-0">
                   <div className="flex items-center gap-3 mb-3">
                     {selectedArtwork.shared && selectedArtwork.selectedCount > 0 && (
-                      <div className="bg-#2E8C46 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg flex items-center gap-1.5">
+                      <div className="bg-[#2E8C46] text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg flex items-center gap-1.5">
                         <CheckCircle size={16} /> {selectedArtwork.selectedCount}
                       </div>
                     )}
@@ -2028,7 +2046,7 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 shrink-0 mt-4">
                   <button 
                     onClick={() => {
                       onToast && onToast('카카오톡으로 공유했어요! 💛');
@@ -2376,7 +2394,7 @@ const Screen5_Community = ({ onNav }) => {
               <div className="flex gap-2 pt-3 border-t border-stone-100">
                 <button
                   onClick={() => handleLike(post.id)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-jua text-base transition-all ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-jua text-lg transition-all ${
                     post.liked
                       ? 'bg-[#E8F7ED] text-[#1E5A2E] border border-[#C8E9D5]'
                       : 'bg-stone-100 text-stone-700 border border-stone-200 hover:bg-[#E8F7ED] hover:border-[#C8E9D5]'
@@ -2386,11 +2404,11 @@ const Screen5_Community = ({ onNav }) => {
                 </button>
                 <button 
                   onClick={() => setSelectedPost(post)}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-stone-100 border border-stone-200 rounded-lg font-jua text-base hover:bg-[#E8F0FF] hover:border-[#C5D9FF] transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-stone-100 border border-stone-200 rounded-lg font-jua text-lg hover:bg-[#E8F0FF] hover:border-[#C5D9FF] transition-all"
                 >
                   💬 댓글 {post.commentCount}
                 </button>
-                <button className="flex items-center justify-center gap-2 px-4 py-2 bg-stone-100 border border-stone-200 rounded-lg font-jua text-base hover:bg-stone-100 transition-all">
+                <button className="flex items-center justify-center gap-2 px-4 py-2 bg-stone-100 border border-stone-200 rounded-lg font-jua text-lg hover:bg-stone-100 transition-all">
                   📤
                 </button>
               </div>
@@ -2453,7 +2471,7 @@ const Screen5_Community = ({ onNav }) => {
                 {selectedPost.comments.map((comment, idx) => (
                   <div key={idx} className="bg-stone-100 p-4 rounded-2xl">
                     <div className="font-jua text-lg text-stone-800 mb-1">{comment.author}</div>
-                    <div className="font-gowun text-base text-stone-700">{comment.text}</div>
+                    <div className="font-gowun text-lg text-stone-700">{comment.text}</div>
                   </div>
                 ))}
               </div>
@@ -2491,7 +2509,7 @@ const Screen5_Community = ({ onNav }) => {
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     placeholder="댓글을 입력하세요..."
-                    className="w-full p-3 border-2 border-stone-200 rounded-2xl font-gowun text-base resize-none focus:border-[#4C8F7E] focus:outline-none"
+                    className="w-full p-3 border-2 border-stone-200 rounded-2xl font-gowun text-lg resize-none focus:border-[#4C8F7E] focus:outline-none"
                     rows={3}
                   />
                 </div>
@@ -2515,7 +2533,7 @@ const Screen5_Community = ({ onNav }) => {
                     setSelectedPost(null);
                     setCommentText('');
                   }}
-                  className="w-full btn-primary bg-white hover:bg-stone-100 border-2 border-stone-300 text-stone-700 h-[52px] text-base"
+                  className="w-full btn-primary bg-white hover:bg-stone-100 border-2 border-stone-300 text-stone-700 h-[52px] text-lg"
                 >
                   취소
                 </button>
@@ -2530,13 +2548,13 @@ const Screen5_Community = ({ onNav }) => {
 
 const MiniStatCard = ({ label, value }) => (
   <div className="flex-1 min-w-[140px] bg-white/90 rounded-2xl px-5 py-3 shadow-sm border border-[#FFE5D4] flex flex-col justify-between">
-    <span className="text-base sm:text-lg font-gowun text-stone-700">{label}</span>
+    <span className="text-lg sm:text-lg font-gowun text-stone-700">{label}</span>
     <span className="text-xl sm:text-2xl font-jua text-orange-800 mt-1">{value}</span>
   </div>
 );
 
 /* 🤖 Screen 6: AI Dashboard (AI 분석 대시보드) */
-const Screen6_AI = ({ onNav }) => {
+const Screen6_AI = ({ onNav, onCategoryNav }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   
   // 특별한 날 이벤트 데이터 (이벤트가 있을 때만 표시)
@@ -2598,7 +2616,7 @@ const Screen6_AI = ({ onNav }) => {
                   </p>
                 </div>
                 <button
-                  onClick={() => onNav("studio_main", "studio")}
+                  onClick={() => onCategoryNav("reminiscence")}
                   className="btn-primary whitespace-nowrap px-8 py-3"
                 >
                   <span className="text-xl font-jua">그리러 가기</span>
@@ -2614,7 +2632,7 @@ const Screen6_AI = ({ onNav }) => {
             {/* 주간 감정 변화 */}
             <div className="card-base p-6 bg-white border-stone-200">
               <h2 className="text-2xl font-jua text-stone-800 mb-4">주간 감정 변화</h2>
-              <p className="text-base font-gowun text-stone-700 mb-6">이번 주 감정 상태를 한눈에 확인하세요</p>
+              <p className="text-lg font-gowun text-stone-700 mb-6">이번 주 감정 상태를 한눈에 확인하세요</p>
 
               {/* 꺾은선 그래프 */}
               <div className="relative bg-gradient-to-br from-stone-50 to-[#FFF5EF]/30 rounded-2xl p-8 border-2 border-stone-100 shadow-inner">
@@ -2785,7 +2803,7 @@ const Screen6_AI = ({ onNav }) => {
                   {showTooltip && (
                     <div className="absolute top-14 left-6 z-20 bg-stone-800 text-white p-4 rounded-xl shadow-xl max-w-sm animate-fadeIn border border-stone-700">
                       <div className="font-jua text-lg mb-1 text-yellow-300">ESI란?</div>
-                      <p className="font-gowun text-base leading-relaxed">
+                      <p className="font-gowun text-lg leading-relaxed">
                         어르신의 마음이 얼마나 편안하고 안정적인지 보여주는 점수예요. 점수가 높을수록 마음이 평온하다는 뜻입니다.
                       </p>
                       <div className="absolute -top-2 left-8 w-4 h-4 bg-stone-800 transform rotate-45 border-t border-l border-stone-700"></div>
@@ -2821,15 +2839,15 @@ const Screen6_AI = ({ onNav }) => {
               <h2 className="text-2xl font-jua text-stone-800 mb-4">생체 리듬 분석</h2>
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-stone-100">
-                  <span className="text-base font-gowun text-stone-700">최적 활동 시간</span>
+                  <span className="text-lg font-gowun text-stone-700">최적 활동 시간</span>
                   <span className="text-xl font-jua text-stone-800">오전 10시 - 11시 30분</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-stone-100">
-                  <span className="text-base font-gowun text-stone-700">평균 집중 시간</span>
+                  <span className="text-lg font-gowun text-stone-700">평균 집중 시간</span>
                   <span className="text-xl font-jua text-stone-800">25분</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-stone-100">
-                  <span className="text-base font-gowun text-stone-700">선호 활동 유형</span>
+                  <span className="text-lg font-gowun text-stone-700">선호 활동 유형</span>
                   <span className="text-xl font-jua text-stone-800">색칠하기 {'>'} 그리기 {'>'} 게임</span>
                 </div>
               </div>
@@ -2866,7 +2884,7 @@ const DonationItem = ({ title, date, org, status }) => (
   <div className="bg-stone-100 p-5 rounded-xl border border-stone-100 flex justify-between items-center">
     <div>
       <h4 className="text-xl sm:text-2xl font-jua text-stone-800">{title}</h4>
-      <p className="text-base sm:text-lg font-gowun text-stone-700">
+      <p className="text-lg sm:text-lg font-gowun text-stone-700">
         {org} · {date}
       </p>
     </div>
@@ -3239,7 +3257,7 @@ const Activity_SlowStudio = ({ onBack }) => {
                 <span className="text-xl sm:text-2xl font-jua text-[#265C43] block">
                   슬로우 코치
                 </span>
-                <span className="text-base sm:text-lg font-gowun text-[#265C43] opacity-80">
+                <span className="text-lg sm:text-lg font-gowun text-[#265C43] opacity-80">
                   AI 분석 중...
                 </span>
               </div>
@@ -3413,7 +3431,7 @@ const Activity_FreeDrawing = ({ onBack, backgroundSketch, customTitle, enableCur
                 }`}
               >
               <tool.icon size={32} strokeWidth={2} className="mb-2" />
-              <span className="text-base font-jua">{tool.label}</span>
+              <span className="text-lg font-jua">{tool.label}</span>
               </button>
           ))}
             </div>
@@ -3724,7 +3742,7 @@ const Screen_GalleryDrawer = ({ onBack }) => {
                 <h3 className="text-2xl font-jua text-stone-800 truncate">
                   {artwork.title}
                 </h3>
-                <div className="flex items-center gap-2 text-base font-gowun text-stone-700">
+                <div className="flex items-center gap-2 text-lg font-gowun text-stone-700">
                   <span className="bg-white px-3 py-1 rounded-lg text-sm">
                     {artwork.category}
                   </span>
@@ -3736,10 +3754,10 @@ const Screen_GalleryDrawer = ({ onBack }) => {
 
               {/* Actions */}
               <div className="mt-4 flex gap-2">
-                <button className="flex-1 bg-white hover:bg-[#E8F7ED] text-stone-700 hover:text-[#1E5A2E] px-4 py-2 rounded-lg font-jua text-base transition border border-stone-200 hover:border-[#B5DFC7]">
+                <button className="flex-1 bg-white hover:bg-[#E8F7ED] text-stone-700 hover:text-[#1E5A2E] px-4 py-2 rounded-lg font-jua text-lg transition border border-stone-200 hover:border-[#B5DFC7]">
                   보기
                 </button>
-                <button className="flex-1 bg-white hover:bg-[#FFF5EF] text-stone-700 hover:text-orange-700 px-4 py-2 rounded-lg font-jua text-base transition border border-stone-200 hover:border-[#FFC89C]">
+                <button className="flex-1 bg-white hover:bg-[#FFF5EF] text-stone-700 hover:text-orange-700 px-4 py-2 rounded-lg font-jua text-lg transition border border-stone-200 hover:border-[#FFC89C]">
                   나눔
                 </button>
               </div>
