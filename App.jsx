@@ -446,17 +446,19 @@ const App = () => {
   const [showVoiceToast, setShowVoiceToast] = useState(false);
   const [voiceToastMessage, setVoiceToastMessage] = useState("");
   const stageRef = useRef(null);
+  const [scale, setScale] = useState(1);
 
   // 스케일 조정 함수 (창이 작아지면 비율 유지하며 축소)
   useEffect(() => {
     const updateScale = () => {
       if (!stageRef.current) return;
-      const scale = Math.min(
+      const newScale = Math.min(
         window.innerWidth / 1280,
         window.innerHeight / 800,
         1 // 최대 크기는 1280x800으로 제한
       );
-      stageRef.current.style.transform = `scale(${scale})`;
+      setScale(newScale);
+      stageRef.current.style.transform = `scale(${newScale})`;
     };
 
     updateScale();
@@ -563,7 +565,7 @@ const App = () => {
               position="top-right" 
               text="홈 화면입니다. 오늘의 수업과 추천 활동을 확인할 수 있습니다."
             />
-            <Screen1_Home onNav={navigateTo} onCategoryNav={navigateToCategory} onStartActivity={startActivity} />
+          <Screen1_Home onNav={navigateTo} onCategoryNav={navigateToCategory} onStartActivity={startActivity} />
           </div>
         );
       case "weekly":
@@ -573,7 +575,7 @@ const App = () => {
               position="top-right" 
               text="금주의 수업 화면입니다. 이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다."
             />
-            <Screen_Weekly onNav={navigateTo} onStartActivity={startActivity} />
+          <Screen_Weekly onNav={navigateTo} onStartActivity={startActivity} />
           </div>
         );
       case "studio_main":
@@ -583,11 +585,11 @@ const App = () => {
               position="top-right" 
               text="창작실 메인 화면입니다. 두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다."
             />
-            <Screen2_StudioMain
-              onNav={navigateTo}
-              onCategoryNav={navigateToCategory}
-              onStartActivity={startActivity}
-            />
+          <Screen2_StudioMain
+            onNav={navigateTo}
+            onCategoryNav={navigateToCategory}
+            onStartActivity={startActivity}
+          />
           </div>
         );
       case "studio_list":
@@ -850,8 +852,36 @@ const App = () => {
 
       {/* Toast Message */}
       {toastMessage && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[110] animate-fadeIn">
-          <div className="bg-stone-800 text-white px-8 py-5 rounded-2xl shadow-2xl font-gowun text-2xl flex items-center gap-3">
+        <div 
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            right: 'unset',
+            bottom: 'unset',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 9999,
+            pointerEvents: 'none',
+            margin: 0,
+            padding: 0,
+            width: 'auto',
+            height: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            animation: 'toastFadeIn 0.3s ease-out forwards'
+          }}
+        >
+          <div 
+            className="bg-stone-800 text-white rounded-lg shadow-2xl font-gowun flex items-center gap-2 whitespace-nowrap"
+            style={{
+              padding: `${10 * scale}px ${14 * scale}px`,
+              fontSize: `${18 * scale}px`,
+              maxWidth: '90vw',
+              lineHeight: 1.4,
+              margin: 0
+            }}
+          >
             {toastMessage}
           </div>
         </div>
@@ -1565,10 +1595,10 @@ const Screen2_StudioMain = ({ onNav, onCategoryNav, onStartActivity }) => {
 
   return (
     <div className="h-full flex flex-col p-6 sm:p-8 gap-6 animate-fadeIn overflow-y-auto sm:overflow-hidden bg-[#FAF7F1]">
-      {/* 4 Major Categories - 2x2 Grid */}
+    {/* 4 Major Categories - 2x2 Grid */}
       <div className="flex-1 grid grid-cols-2 gap-5 min-h-0">
         {creationActivities.map((activity) => (
-          <StudioCard
+      <StudioCard
             key={activity.id}
             title={activity.title}
             desc={activity.description}
@@ -1576,11 +1606,11 @@ const Screen2_StudioMain = ({ onNav, onCategoryNav, onStartActivity }) => {
             icon={activity.icon}
             color={activity.color}
             onClick={activity.onClick}
-          />
+      />
         ))}
-      </div>
     </div>
-  );
+  </div>
+);
 };
 
 const StudioCard = ({ title, desc, tags, icon, color, onClick }) => (
@@ -1720,15 +1750,19 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
 
   const handleShareArtwork = (id, isRoomItem = false) => {
     if (isRoomItem) {
+      const currentItem = myRoomItems.find(item => item.id === id);
+      const wasShared = currentItem?.shared || false;
       setMyRoomItems(items => 
         items.map(item => item.id === id ? { ...item, shared: !item.shared } : item)
       );
-      onToast && onToast('나눔 전시관에 올렸어요! 💚');
+      onToast && onToast(wasShared ? '나눔 전시관에서 내렸어요!' : '나눔 전시관에 올렸어요! 💚');
     } else {
+      const currentArtwork = myArtworks.find(artwork => artwork.id === id);
+      const wasShared = currentArtwork?.shared || false;
       setMyArtworks(artworks => 
         artworks.map(artwork => artwork.id === id ? { ...artwork, shared: !artwork.shared } : artwork)
       );
-      onToast && onToast('나눔 전시관에 올렸어요! 💚');
+      onToast && onToast(wasShared ? '나눔 전시관에서 내렸어요!' : '나눔 전시관에 올렸어요! 💚');
     }
   };
 
@@ -2328,28 +2362,28 @@ const Screen5_Community = ({ onNav }) => {
             <span>전체 작품</span>
           </div>
 
-          {/* 카테고리 탭 */}
+      {/* 카테고리 탭 */}
           <div className="flex gap-4 mb-6 overflow-x-auto shrink-0">
-            {[
-              { key: 'all', label: '전체' },
-              { key: 'landscape', label: '풍경화' },
-              { key: 'memory', label: '추억 그리기' },
-              { key: 'color', label: '색채 실험' },
-              { key: 'free', label: '자유 주제' }
-            ].map(({ key, label }) => (
-              <button
-                key={key}
-                onClick={() => setCurrentCategory(key)}
+        {[
+          { key: 'all', label: '전체' },
+          { key: 'landscape', label: '풍경화' },
+          { key: 'memory', label: '추억 그리기' },
+          { key: 'color', label: '색채 실험' },
+          { key: 'free', label: '자유 주제' }
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setCurrentCategory(key)}
                 className={`px-8 py-4 rounded-2xl font-jua text-lg whitespace-nowrap transition-all ${
-                  currentCategory === key
+              currentCategory === key
                     ? 'bg-[#4C8F7E] text-white shadow-[0_4px_#265C43] border-2 border-[#265C43]'
                     : 'bg-white text-stone-700 border-2 border-stone-200 hover:border-[#4C8F7E] hover:bg-stone-100'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
           {/* 기존 마음 나눔 콘텐츠 영역 */}
           <section className="space-y-4">
@@ -2427,9 +2461,9 @@ const Screen5_Community = ({ onNav }) => {
               )}
             </div>
           ))}
-            </div>
-          </section>
         </div>
+          </section>
+      </div>
       </div>
 
       {/* 댓글 작성 모달 */}

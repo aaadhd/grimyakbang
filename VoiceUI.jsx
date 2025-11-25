@@ -100,7 +100,7 @@ export const VoiceGuideButton = ({ position = "top-right", text = "화면 안내
       utterance.volume = 1.0;
 
       utterance.onstart = () => {
-        setIsPlaying(true);
+    setIsPlaying(true);
         notifyAllButtons(true);
       };
 
@@ -165,10 +165,10 @@ export const VoiceGuideButton = ({ position = "top-right", text = "화면 안내
         <>
           <span className="whitespace-nowrap">재생 중</span>
           <div className="flex gap-1 flex-shrink-0">
-            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
-            <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-          </div>
+          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
+          <div className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+        </div>
         </>
       ) : (
         <>
