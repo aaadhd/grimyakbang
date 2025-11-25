@@ -40,7 +40,7 @@ import {
   Mic,
 } from "lucide-react";
 import "./styles.css";
-import { VoiceGuideButton, VoiceCommandModal, VoiceFeedbackToast, stopVoiceGuide } from "./VoiceUI";
+import { VoiceGuideButton, stopVoiceGuide } from "./VoiceUI";
 
 // --- 1. Drawing Engine Component (Reusable) ---
 const DrawingCanvas = ({ color, lineWidth, tool, onInteract, isMagicMode }) => {
@@ -285,7 +285,7 @@ const WelcomeScreen = ({ onStartToday, onExplore }) => {
           <button
             onClick={onStartToday}
             style={{ fontSize: '26px' }}
-            className="btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] border-[#D85718] text-white h-[72px] px-12 shadow-lg font-jua flex-1"
+            className="btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] text-white h-[72px] px-12 shadow-lg font-jua flex-1"
           >
             오늘의 수업 시작하기
           </button>
@@ -337,31 +337,31 @@ const CoachMark = ({ onDismiss }) => {
     {
       target: "weekly",
       title: "금주의 수업",
-      desc: "금주의 수업 화면입니다.\n이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다.",
+      desc: "이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다.",
       style: { top: "100px", right: "380px" }
     },
     {
       target: "studio",
       title: "창작실",
-      desc: "창작실 메인 화면입니다.\n두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다.",
+      desc: "두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다.",
       style: { top: "100px", right: "260px" }
     },
     {
       target: "gallery",
       title: "나의 갤러리",
-      desc: "나의 갤러리입니다.\n내가 그린 작품들을 확인할 수 있습니다.",
+      desc: "내가 그린 작품들을 확인할 수 있습니다.",
       style: { top: "100px", right: "210px" }
     },
     {
       target: "community",
       title: "마음 나눔",
-      desc: "마음 나눔 화면입니다.\n명예의 전당 작품과 다른 어르신들의 작품을 보고\n댓글로 소통할 수 있습니다.",
+      desc: "명예의 전당 작품과 다른 어르신들의 작품을 보고\n댓글로 소통할 수 있습니다.",
       style: { top: "100px", right: "130px" }
     },
     {
       target: "ai",
       title: "AI 분석",
-      desc: "AI 분석 화면입니다.\n주간 감정 변화와 활동 분석을 확인할 수 있습니다.",
+      desc: "주간 감정 변화와 활동 분석을 확인할 수 있습니다.",
       style: { top: "100px", right: "20px" }
     }
   ];
@@ -442,9 +442,6 @@ const App = () => {
   const [currentActivityCategory, setCurrentActivityCategory] = useState(null); // 활동 시작 시 카테고리 저장
   const [showEmotionModal, setShowEmotionModal] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
-  const [showVoiceModal, setShowVoiceModal] = useState(false);
-  const [showVoiceToast, setShowVoiceToast] = useState(false);
-  const [voiceToastMessage, setVoiceToastMessage] = useState("");
   const stageRef = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -497,12 +494,6 @@ const App = () => {
     const activityCategory = category || getCategoryFromActivityId(activityId);
     setCurrentActivityCategory(activityCategory);
     navigateTo("activity_player", "studio");
-  };
-
-  const showVoiceFeedback = (message) => {
-    setVoiceToastMessage(message);
-    setShowVoiceToast(true);
-    setTimeout(() => setShowVoiceToast(false), 3000);
   };
 
   const showToast = (message) => {
@@ -563,7 +554,7 @@ const App = () => {
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="홈 화면입니다. 오늘의 수업과 추천 활동을 확인할 수 있습니다."
+              text="오늘의 수업과 추천 활동을 확인할 수 있습니다."
             />
           <Screen1_Home onNav={navigateTo} onCategoryNav={navigateToCategory} onStartActivity={startActivity} />
           </div>
@@ -573,7 +564,7 @@ const App = () => {
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="금주의 수업 화면입니다. 이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다."
+              text="이번 주 복지관 수업 일정을 확인하고 참여할 수 있습니다."
             />
           <Screen_Weekly onNav={navigateTo} onStartActivity={startActivity} />
           </div>
@@ -583,7 +574,7 @@ const App = () => {
           <div className="h-full relative bg-[#FAF7F1]">
             <VoiceGuideButton 
               position="top-right" 
-              text="창작실 메인 화면입니다. 두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다."
+              text="두뇌 미니게임과 다양한 미술 활동을 선택할 수 있습니다."
             />
           <Screen2_StudioMain
             onNav={navigateTo}
@@ -652,7 +643,7 @@ const App = () => {
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="나의 갤러리입니다. 내가 그린 작품들을 확인할 수 있습니다."
+              text="내가 그린 작품들을 확인할 수 있습니다."
             />
             <Screen4_Gallery onNav={navigateTo} onToast={showToast} />
           </div>
@@ -662,7 +653,7 @@ const App = () => {
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="마음 나눔 화면입니다. 명예의 전당 작품과 다른 어르신들의 작품을 보고 댓글로 소통할 수 있습니다."
+              text="명예의 전당 작품과 다른 어르신들의 작품을 보고 댓글로 소통할 수 있습니다."
             />
             <Screen5_Community onNav={navigateTo} />
           </div>
@@ -672,7 +663,7 @@ const App = () => {
           <div className="h-full relative">
             <VoiceGuideButton 
               position="top-right" 
-              text="AI 분석 화면입니다. 주간 감정 변화 그래프와 정서 안정 지수, 활동 분석을 확인할 수 있습니다."
+              text="주간 감정 변화 그래프와 정서 안정 지수, 활동 분석을 확인할 수 있습니다."
             />
             <Screen6_AI onNav={navigateTo} onCategoryNav={navigateToCategory} />
           </div>
@@ -887,15 +878,6 @@ const App = () => {
         </div>
       )}
 
-      {/* 음성 UI 추가 - 임시 주석 처리 */}
-      {/* <VoiceCommandModal
-        isOpen={showVoiceModal}
-        onClose={() => setShowVoiceModal(false)}
-      />
-      <VoiceFeedbackToast
-        message={voiceToastMessage}
-        isVisible={showVoiceToast}
-      /> */}
     </div>
   );
 };
@@ -1279,7 +1261,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                 
                 {/* 중앙 재생 버튼 */}
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] rounded-full flex items-center justify-center mx-auto shadow-lg cursor-pointer hover:bg-[#D85718] transition-all">
+                  <div className="w-16 h-16 bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] rounded-full flex items-center justify-center mx-auto shadow-lg cursor-pointer hover:bg-[#D85718] transition-all">
                     <Play size={28} className="text-white ml-1" />
                   </div>
                   <p className="text-lg font-gowun text-stone-700 mt-3">
@@ -1312,7 +1294,7 @@ const Screen_Weekly = ({ onNav, onStartActivity }) => {
                       onStartActivity(selectedClass.linkedActivityId);
                             setSelectedClass(null);
                           }}
-                    className="w-full btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] border-[#D85718] text-white text-lg h-[64px] font-jua shadow-md flex items-center justify-center gap-2"
+                    className="w-full btn-primary bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] text-white text-lg h-[64px] font-jua shadow-md flex items-center justify-center gap-2"
                         >
                     <Palette size={22} />
                     디지털 활동 시작
@@ -1496,7 +1478,7 @@ const Screen1_Home = ({ onNav, onCategoryNav, onStartActivity }) => {
         </p>
         <button
           style={{ fontSize: '25px' }}
-          className="btn-primary w-full h-[64px] shadow-[#FFD5B8] border-[#F29A5A] bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718]"
+          className="btn-primary w-full h-[64px] shadow-[#FFD5B8] border-[#F29A5A] bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718]"
           onClick={() => onCategoryNav("emotion")}
         >
           추천 활동 시작하기
@@ -1758,21 +1740,27 @@ const Screen4_Gallery = ({ onNav, onToast }) => {
   ]);
 
   const handleShareArtwork = (id, isRoomItem = false) => {
+    const TOAST_MESSAGES = {
+      UPLOADED: '나눔 전시관에 올렸어요! 💚',
+      REMOVED: '나눔 전시관에서 내렸어요!'
+    };
+    
+    const items = isRoomItem ? myRoomItems : myArtworks;
+    const currentItem = items.find(item => item.id === id);
+    const wasShared = currentItem?.shared || false;
+    const toastMessage = wasShared ? TOAST_MESSAGES.REMOVED : TOAST_MESSAGES.UPLOADED;
+    
     if (isRoomItem) {
-      const currentItem = myRoomItems.find(item => item.id === id);
-      const wasShared = currentItem?.shared || false;
       setMyRoomItems(items => 
         items.map(item => item.id === id ? { ...item, shared: !item.shared } : item)
       );
-      onToast && onToast(wasShared ? '나눔 전시관에서 내렸어요!' : '나눔 전시관에 올렸어요! 💚');
     } else {
-      const currentArtwork = myArtworks.find(artwork => artwork.id === id);
-      const wasShared = currentArtwork?.shared || false;
       setMyArtworks(artworks => 
         artworks.map(artwork => artwork.id === id ? { ...artwork, shared: !artwork.shared } : artwork)
       );
-      onToast && onToast(wasShared ? '나눔 전시관에서 내렸어요!' : '나눔 전시관에 올렸어요! 💚');
     }
+    
+    onToast && onToast(toastMessage);
   };
 
   return (
@@ -3672,7 +3660,7 @@ const Activity_VoiceArt = ({ onBack }) => {
             
             <button 
               onClick={handleRecordStart}
-              className="w-48 h-48 bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] rounded-full shadow-xl flex items-center justify-center transition-transform hover:scale-105 group relative"
+              className="w-48 h-48 bg-[#EB6A29] border border-[#D85718] shadow-md shadow-[#FFD5B8] hover:bg-[#D85718] rounded-full shadow-xl flex items-center justify-center transition-transform hover:scale-105 group relative"
             >
               <div className="absolute inset-0 rounded-full border-4 border-[#FFC89C] animate-ping opacity-50" />
               <div className="text-white">
@@ -3722,108 +3710,6 @@ const Activity_VoiceArt = ({ onBack }) => {
             <p className="text-xl font-gowun text-stone-700">
               조금만 기다려주세요...
             </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-/* 📁 Gallery Drawer - My Artworks List */
-const Screen_GalleryDrawer = ({ onBack }) => {
-  // Mock 데이터: 사용자가 그린 작품들
-  const myArtworks = [
-    { id: 1, title: '해바라기', date: '2024.11.20', category: '자유 드로잉', emoji: '🌻', color: 'bg-yellow-50' },
-    { id: 2, title: '고향집', date: '2024.11.18', category: '추억 스케치', emoji: '🏡', color: 'bg-[#E8F0FF]' },
-    { id: 3, title: '나비', date: '2024.11.15', category: '명화 컬러링', emoji: '🦋', color: 'bg-purple-50' },
-    { id: 4, title: '가을 풍경', date: '2024.11.12', category: '자유 드로잉', emoji: '🍂', color: 'bg-[#FFF5EF]' },
-    { id: 5, title: '평화로운 오후', date: '2024.11.10', category: '빗소리 드로잉', emoji: '☕', color: 'bg-[#E8F7ED]' },
-    { id: 6, title: '엄마 생각', date: '2024.11.08', category: '추억 스케치', emoji: '👵', color: 'bg-pink-50' },
-    { id: 7, title: '봄날', date: '2024.11.05', category: '명화 컬러링', emoji: '🌸', color: 'bg-pink-50' },
-    { id: 8, title: '강아지', date: '2024.11.03', category: '자유 드로잉', emoji: '🐕', color: 'bg-amber-50' },
-  ];
-
-  return (
-    <div className="h-full flex flex-col bg-stone-100 animate-fadeIn overflow-hidden">
-      {/* Header */}
-      <div className="bg-white border-b-2 border-stone-200 p-5 shrink-0">
-        <div className="flex items-center justify-between mb-3">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2 text-stone-700 hover:text-stone-900 font-jua text-xl sm:text-2xl px-6 py-3 rounded-xl hover:bg-stone-100 transition"
-          >
-            <ArrowLeft size={28} /> 나의 아틀리에로
-          </button>
-          <div className="flex items-center gap-3">
-            <div className="bg-[#E8F7ED] p-3 rounded-full">
-              <Grid size={32} className="text-[#256A39]" />
-            </div>
-            <div>
-              <p className="text-lg font-gowun text-stone-700">총 {myArtworks.length}개의 작품</p>
-            </div>
-          </div>
-          <div className="w-20 hidden sm:block" />
-        </div>
-      </div>
-
-      {/* Gallery Grid */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-5">
-        <div className="grid grid-cols-3 gap-5">
-          {myArtworks.map((artwork) => (
-            <div
-              key={artwork.id}
-              className={`${artwork.color} border-2 border-stone-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group`}
-            >
-              {/* Artwork Preview */}
-              <div className="bg-white rounded-xl shadow-md mb-4 aspect-[4/3] flex items-center justify-center border-4 border-white relative overflow-hidden group-hover:border-[#C8E9D5] transition">
-                <div className="text-8xl">{artwork.emoji}</div>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition" />
-              </div>
-
-              {/* Artwork Info */}
-              <div className="space-y-2">
-                <h3 className="text-2xl font-jua text-stone-800 truncate">
-                  {artwork.title}
-                </h3>
-                <div className="flex items-center gap-2 text-lg font-gowun text-stone-700">
-                  <span className="bg-white px-3 py-1 rounded-lg text-sm">
-                    {artwork.category}
-                  </span>
-                </div>
-                <p className="text-base font-gowun text-stone-400">
-                  {artwork.date}
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="mt-4 flex gap-2">
-                <button className="flex-1 bg-white hover:bg-[#E8F7ED] text-stone-700 hover:text-[#1E5A2E] px-4 py-2 rounded-lg font-jua text-lg transition border border-stone-200 hover:border-[#B5DFC7]">
-                  보기
-                </button>
-                <button className="flex-1 bg-white hover:bg-[#FFF5EF] text-stone-700 hover:text-orange-700 px-4 py-2 rounded-lg font-jua text-lg transition border border-stone-200 hover:border-[#FFC89C]">
-                  나눔
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty State (if no artworks) */}
-        {myArtworks.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="text-9xl mb-6 opacity-20">🎨</div>
-            <h3 className="text-3xl font-jua text-stone-400 mb-2">
-              아직 작품이 없어요
-            </h3>
-            <p className="text-xl font-gowun text-stone-400 mb-6">
-              창작실에서 그림을 그려보세요!
-            </p>
-            <button
-              onClick={onBack}
-              className="btn-primary text-xl h-[56px] w-[240px]"
-            >
-              그림 그리러 가기
-            </button>
           </div>
         )}
       </div>
