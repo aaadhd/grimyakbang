@@ -952,6 +952,10 @@ const TabButton = ({ icon: Icon, label, id, active, onClick }) => {
           ? "text-[#265C43]"
           : "text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-xl"
       }`}
+      style={{
+        WebkitTextSizeAdjust: '100%',
+        textSizeAdjust: '100%'
+      }}
     >
       <div
         className={`p-2 rounded-xl ${
@@ -961,9 +965,14 @@ const TabButton = ({ icon: Icon, label, id, active, onClick }) => {
         <Icon size={32} strokeWidth={active === id ? 3 : 2} />
       </div>
       <span
-        className={`text-sm sm:text-lg font-jua whitespace-nowrap ${
+        className={`text-lg sm:text-lg font-jua ${
           active === id ? "font-bold" : "font-medium"
         }`}
+        style={{
+          WebkitTextSizeAdjust: '100%',
+          textSizeAdjust: '100%',
+          whiteSpace: 'nowrap'
+        }}
       >
         {label}
       </span>

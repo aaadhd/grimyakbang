@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safari 텍스트 자동 확대 방지 */
+* {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 /* 스테이지 컨테이너 - 브라우저 전체 화면 */
 #stage-container {
   width: 100vw;
